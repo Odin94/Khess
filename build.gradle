@@ -4,17 +4,29 @@ plugins {
 
 group 'Khess'
 version '1.0-SNAPSHOT'
+def gdxVersion = '1.9.10'
+
 
 repositories {
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    mavenLocal()
+    maven { url "https://plugins.gradle.org/m2/" }
+    jcenter()
+    google()
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "com.badlogicgames.ashley:ashley:1.7.3"
     implementation group: 'io.github.libktx', name: 'ktx-ashley', version: '1.9.9-b2'
+
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    implementation "com.badlogicgames.ashley:ashley:1.7.3"
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 }
 
 compileKotlin {
