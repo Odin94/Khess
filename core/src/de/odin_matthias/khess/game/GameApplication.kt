@@ -3,6 +3,7 @@ package de.odin_matthias.khess.game
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import de.odin_matthias.khess.board.Board
 import de.odin_matthias.khess.resources.TextureRepository
@@ -16,7 +17,7 @@ class GameApplication() : ApplicationAdapter() {
         TextureRepository.load()
         batch = SpriteBatch()
 
-        board = Board(8, 8)
+        board = Board(GameConfig.BOARD_DIMENSION, GameConfig.BOARD_DIMENSION)
     }
 
     override fun render() {

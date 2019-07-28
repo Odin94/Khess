@@ -5,13 +5,15 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.utils.ImmutableArray
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.VisualComponent
+import de.odin_matthias.khess.game.GameConfig.BOARD_SIZE
 import ktx.ashley.allOf
 
 
-class RenderSystem(private val batch: SpriteBatch = SpriteBatch()) : EntitySystem() {
+class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), val camera: OrthographicCamera = createCamera()) : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
@@ -22,6 +24,9 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch()) : EntitySyste
     }
 
     override fun update(deltaTime: Float) {
+        camera.update()
+
+        batch.projectionMatrix = camera.combined
         batch.begin()
         entities.forEach {
             val position = positionMapper.get(it)
@@ -31,4 +36,12 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch()) : EntitySyste
         }
         batch.end()
     }
+}
+
+private fun createCamera(): OrthographicCamera {
+    val camera = OrthographicCamera(BOARD_SIZE.toFloat(), BOARD_SIZE.toFloat())
+    camera.position.set(BOARD_SIZE.toFloat() / 2, BOARD_SIZE.toFloat() / 2, 0f)
+    camera.update()
+
+    return camera
 }
