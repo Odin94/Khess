@@ -9,6 +9,7 @@ import de.odin_matthias.khess.EntityFactory.addQueen
 import de.odin_matthias.khess.EntityFactory.addRook
 import de.odin_matthias.khess.EntityFactory.addTile
 import de.odin_matthias.khess.PIECE_COLOR
+import de.odin_matthias.khess.systems.PieceSelectSystem
 import de.odin_matthias.khess.systems.RenderSystem
 
 
@@ -28,6 +29,7 @@ class Board(private val width: Int, private val height: Int) {
 
     private fun generateSystems() {
         engine.addSystem(RenderSystem())
+        engine.addSystem(PieceSelectSystem())
     }
 
     private fun generateTiles(width: Int, height: Int) = also {

@@ -1,6 +1,7 @@
 package de.odin_matthias.khess
 
 import com.badlogic.ashley.core.Engine
+import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.VisualComponent
 import de.odin_matthias.khess.game.GameConfig.TILE_SIZE
@@ -49,6 +50,7 @@ object EntityFactory {
                     x = row * TILE_SIZE
                     y = col * TILE_SIZE
                 }
+                with<PieceSelectComponent>()
             }
 
     fun addRook(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
@@ -63,6 +65,7 @@ object EntityFactory {
                     x = row * TILE_SIZE
                     y = col * TILE_SIZE
                 }
+                with<PieceSelectComponent>()
             }
 
     fun addKnight(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
@@ -77,6 +80,7 @@ object EntityFactory {
                     x = row * TILE_SIZE
                     y = col * TILE_SIZE
                 }
+                with<PieceSelectComponent>()
             }
 
     fun addBishop(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
@@ -91,6 +95,7 @@ object EntityFactory {
                     x = row * TILE_SIZE
                     y = col * TILE_SIZE
                 }
+                with<PieceSelectComponent>()
             }
 
     fun addQueen(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
@@ -105,6 +110,7 @@ object EntityFactory {
                     x = row * TILE_SIZE
                     y = col * TILE_SIZE
                 }
+                with<PieceSelectComponent>()
             }
 
     fun addKing(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
@@ -119,5 +125,6 @@ object EntityFactory {
                     x = row * TILE_SIZE
                     y = col * TILE_SIZE
                 }
+                with<PieceSelectComponent>()
             }
 }
