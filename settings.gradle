@@ -1,2 +1,1 @@
-rootProject.name = 'khess'
-
+include 'desktop', 'core'
