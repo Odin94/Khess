@@ -10,6 +10,8 @@ object TextureRepository {
     lateinit var BLACK_TILE: Texture
     lateinit var WHITE_TILE: Texture
 
+    lateinit var SELECTION_HIGHLIGHT: Texture
+
     lateinit var WHITE_PAWN: Texture
     lateinit var WHITE_ROOK: Texture
     lateinit var WHITE_BISHOP: Texture
@@ -27,6 +29,8 @@ object TextureRepository {
     fun load() {
         BLACK_TILE = Texture("$pathPrefix/black_tile.png")
         WHITE_TILE = Texture("$pathPrefix/white_tile.png")
+
+        SELECTION_HIGHLIGHT = Texture("$pathPrefix/selection_highlight.png")
 
         WHITE_PAWN = Texture("$pathPrefix/$piecesPathPrefix/white_pawn.png")
         WHITE_ROOK = Texture("$pathPrefix/$piecesPathPrefix/white_rook.png")
