@@ -13,7 +13,7 @@ import de.odin_matthias.khess.game.GameConfig.BOARD_SIZE
 import ktx.ashley.allOf
 
 
-class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), val camera: OrthographicCamera = createCamera()) : EntitySystem() {
+class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val camera: OrthographicCamera = createCamera()) : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val positionMapper = ComponentMapper.getFor(PositionComponent::class.java)
@@ -41,6 +41,7 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), val camera: O
 private fun createCamera(): OrthographicCamera {
     val camera = OrthographicCamera(BOARD_SIZE.toFloat(), BOARD_SIZE.toFloat())
     camera.position.set(BOARD_SIZE.toFloat() / 2, BOARD_SIZE.toFloat() / 2, 0f)
+    camera.zoom = 1.1f
     camera.update()
 
     return camera
