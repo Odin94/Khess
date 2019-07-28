@@ -10,7 +10,7 @@ object TextureRepository {
     lateinit var WHITE_TILE: Texture
 
     fun load() {
-        BLACK_TILE = Texture("badlogic.jpg") //Texture("$pathPrefix/black_tile.png")
-        WHITE_TILE = Texture("badlogic.jpg") //Texture("$pathPrefix/white_tile.png")
+        BLACK_TILE = Texture("$pathPrefix/black_tile.png")
+        WHITE_TILE = Texture("$pathPrefix/white_tile.png")
     }
 }

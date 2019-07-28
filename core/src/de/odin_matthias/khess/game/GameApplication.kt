@@ -20,7 +20,7 @@ class GameApplication() : ApplicationAdapter() {
     }
 
     override fun render() {
-        Gdx.gl.glClearColor(0F, 0F, 0F, 1F);
+        Gdx.gl.glClearColor(0F, 0.1F, 0.1F, 1F);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         board.engine.update(Gdx.graphics.deltaTime);

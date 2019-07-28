@@ -6,16 +6,18 @@ import de.odin_matthias.khess.components.VisualComponent
 import de.odin_matthias.khess.resources.TextureRepository
 import ktx.ashley.entity
 
+const val tileSize = 64
+
 
 object EntityFactory {
-    fun addTile(engine: Engine, xPos: Float, yPos: Float) =
+    fun addTile(engine: Engine, row: Float, col: Float) =
         engine.entity {
             with<VisualComponent>() {
-                texture = getTexture(xPos.toInt(), yPos.toInt())
+                texture = getTexture(row.toInt(), col.toInt())
             }
             with<PositionComponent> {
-                x = xPos
-                y = yPos
+                x = row * tileSize
+                y = col * tileSize
             }
         }
 }
