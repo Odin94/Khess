@@ -5,14 +5,18 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import de.odin_matthias.khess.board.Board
+import de.odin_matthias.khess.resources.TextureRepository
 
 
 class GameApplication() : ApplicationAdapter() {
     private lateinit var batch: SpriteBatch
-    private val board = Board(8, 8)
+    private lateinit var board: Board
 
     override fun create() {
+        TextureRepository.load()
         batch = SpriteBatch()
+
+        board = Board(8, 8)
     }
 
     override fun render() {

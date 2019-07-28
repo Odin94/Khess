@@ -6,6 +6,11 @@ import com.badlogic.gdx.graphics.Texture
 object TextureRepository {
     const val pathPrefix = "data"
 
-    val BLACK_TILE = Texture("$pathPrefix/black_tile.png")
-    val WHITE_TILE = Texture("badlogic.jpg") //Texture("$pathPrefix/white_tile.png")
+    lateinit var BLACK_TILE: Texture
+    lateinit var WHITE_TILE: Texture
+
+    fun load() {
+        BLACK_TILE = Texture("badlogic.jpg") //Texture("$pathPrefix/black_tile.png")
+        WHITE_TILE = Texture("badlogic.jpg") //Texture("$pathPrefix/white_tile.png")
+    }
 }
