@@ -5,6 +5,7 @@ plugins {
 group 'Khess'
 version '1.0-SNAPSHOT'
 def gdxVersion = '1.9.10'
+def libktxVersion = '1.9.9-b2'
 
 
 repositories {
@@ -19,7 +20,9 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation group: 'io.github.libktx', name: 'ktx-ashley', version: '1.9.9-b2'
+    implementation group: 'io.github.libktx', name: 'ktx-ashley', version: "$libktxVersion"
+    implementation group: 'io.github.libktx', name: 'ktx-app', version: "$libktxVersion"
+    implementation group: 'io.github.libktx', name: 'ktx-graphics', version: "$libktxVersion"
 
     implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"

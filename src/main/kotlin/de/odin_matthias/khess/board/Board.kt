@@ -1,16 +1,20 @@
 package de.odin_matthias.khess.board
 
 import com.badlogic.ashley.core.Engine
-import com.badlogic.ashley.core.Entity
+import de.odin_matthias.khess.EntityFactory.addTile
 
+const val tileSize = 64
 
-class Board(
-    private val tiles: Map<Position, Tile>
-) {
-    private val engine = Engine()
+class Board(private val width: Int, private val height: Int) {
+    val engine = Engine()
 
-    fun addAt(piece: Entity, position: Position) {
-        tiles.getValue(position).occupants.add(piece)
-        engine.addEntity(piece)
+    init {
+        generateTiles(width, height)
+    }
+
+    private fun generateTiles(width: Int, height: Int) = also {
+        (0 until width).zip(0 until height).forEach { (x, y) ->
+            addTile(engine, x.toFloat() * tileSize, y.toFloat() * tileSize)
+        }
     }
 }
