@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import de.odin_matthias.khess.InputReceiver
 import de.odin_matthias.khess.board.Board
 import de.odin_matthias.khess.resources.TextureRepository
 
@@ -15,6 +16,7 @@ class GameApplication() : ApplicationAdapter() {
     override fun create() {
         TextureRepository.load()
         batch = SpriteBatch()
+        Gdx.input.inputProcessor = InputReceiver
 
         board = Board(GameConfig.BOARD_DIMENSION, GameConfig.BOARD_DIMENSION)
     }

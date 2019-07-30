@@ -29,7 +29,7 @@ class Board(private val width: Int, private val height: Int) {
 
     private fun generateSystems() {
         engine.addSystem(RenderSystem())
-        engine.addSystem(PieceSelectSystem())
+        engine.addSystem(PieceSelectSystem)
     }
 
     private fun generateTiles(width: Int, height: Int) = also {

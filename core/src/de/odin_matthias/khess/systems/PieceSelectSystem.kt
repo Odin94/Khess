@@ -13,7 +13,7 @@ import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-class PieceSelectSystem : EntitySystem() {
+object PieceSelectSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()
@@ -24,18 +24,25 @@ class PieceSelectSystem : EntitySystem() {
     }
 
     override fun update(deltaTime: Float) {
-        entities.forEach {
-            selected.get(it).selected = clickHitPiece(it)
-        }
+
     }
 
-    private fun clickHitPiece(piece: Entity): Boolean {
+    fun select(clickX: Int, clickY: Int): Boolean {
+        var selectedAPiece = false
+        entities.forEach {
+            selected.get(it).selected = clickHitPiece(it, clickX, clickY)
+            if (selected.get(it).selected) selectedAPiece = true
+        }
+
+        return selectedAPiece
+    }
+
+    private fun clickHitPiece(piece: Entity, clickX: Int, clickY: Int): Boolean {
         if (!Gdx.input.isTouched) return false
 
         val piecePos = position.get(piece)
-        val x = Gdx.input.x
-        val y = BOARD_SIZE - Gdx.input.y
+        val y = BOARD_SIZE - clickY
 
-        return x >= piecePos.x && x <= piecePos.x + TILE_SIZE && y >= piecePos.y && y <= piecePos.y + TILE_SIZE
+        return clickX > piecePos.x && clickX < piecePos.x + TILE_SIZE && y > piecePos.y && y < piecePos.y + TILE_SIZE
     }
 }
