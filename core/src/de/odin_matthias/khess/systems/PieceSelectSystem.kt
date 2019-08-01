@@ -5,9 +5,11 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.Gdx
+import de.odin_matthias.khess.Camera
 import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
-import de.odin_matthias.khess.game.GameConfig.BOARD_SIZE
+import de.odin_matthias.khess.extensions.component1
+import de.odin_matthias.khess.extensions.component2
 import de.odin_matthias.khess.game.GameConfig.TILE_SIZE
 import ktx.ashley.allOf
 import ktx.ashley.mapperFor
@@ -27,22 +29,22 @@ object PieceSelectSystem : EntitySystem() {
 
     }
 
-    fun select(clickX: Int, clickY: Int): Boolean {
+    fun select(): Boolean {
         var selectedAPiece = false
         entities.forEach {
-            selected.get(it).selected = clickHitPiece(it, clickX, clickY)
+            selected.get(it).selected = clickHitPiece(it)
             if (selected.get(it).selected) selectedAPiece = true
         }
 
         return selectedAPiece
     }
 
-    private fun clickHitPiece(piece: Entity, clickX: Int, clickY: Int): Boolean {
-        if (!Gdx.input.isTouched) return false
-
+    private fun clickHitPiece(piece: Entity): Boolean {
         val piecePos = position.get(piece)
-        val y = BOARD_SIZE - clickY
+        val (x, y) = Camera.getMousePosInGameWorld()
 
-        return clickX > piecePos.x && clickX < piecePos.x + TILE_SIZE && y > piecePos.y && y < piecePos.y + TILE_SIZE
+        Gdx.app.log("PieceSelectSystem", "x: $x, y: $y")
+
+        return x > piecePos.x && x < piecePos.x + TILE_SIZE && y > piecePos.y && y < piecePos.y + TILE_SIZE
     }
 }

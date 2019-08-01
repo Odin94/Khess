@@ -7,7 +7,7 @@ import de.odin_matthias.khess.systems.PieceSelectSystem
 object InputReceiver : InputProcessor {
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        val selectedAPiece = PieceSelectSystem.select(screenX, screenY)
+        val selectedAPiece = PieceSelectSystem.select()
 
         return true
     }
