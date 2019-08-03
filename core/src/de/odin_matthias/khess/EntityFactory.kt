@@ -37,9 +37,6 @@ object EntityFactory {
                     x = row * TILE_SIZE
                     y = col * TILE_SIZE
                 }
-                with<BlockerComponent> {
-                    this.color = color
-                }
             }
 
     fun addPawn(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
