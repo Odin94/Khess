@@ -5,6 +5,9 @@ import de.odin_matthias.khess.components.BlockerComponent
 import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.VisualComponent
+import de.odin_matthias.khess.components.movement.AttackComponent
+import de.odin_matthias.khess.components.movement.DirectMovementComponent
+import de.odin_matthias.khess.components.movement.Directions
 import de.odin_matthias.khess.game.GameConfig.TILE_SIZE
 import de.odin_matthias.khess.resources.TextureRepository.BLACK_BISHOP
 import de.odin_matthias.khess.resources.TextureRepository.BLACK_KING
@@ -22,7 +25,7 @@ import de.odin_matthias.khess.resources.TextureRepository.WHITE_ROOK
 import de.odin_matthias.khess.resources.TextureRepository.WHITE_TILE
 import ktx.ashley.entity
 
-enum class PIECE_COLOR {
+enum class PieceColors {
     BLACK,
     WHITE
 }
@@ -39,12 +42,64 @@ object EntityFactory {
                 }
             }
 
-    fun addPawn(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
+    fun addPawn(engine: Engine, row: Float, col: Float, color: PieceColors) =
             engine.entity {
                 with<VisualComponent> {
                     texture = when (color) {
-                        PIECE_COLOR.BLACK -> BLACK_PAWN
-                        PIECE_COLOR.WHITE -> WHITE_PAWN
+                        PieceColors.BLACK -> BLACK_PAWN
+                        PieceColors.WHITE -> WHITE_PAWN
+                    }
+                }
+                with<PositionComponent> {
+                    x = row * TILE_SIZE
+                    y = col * TILE_SIZE
+                }
+                with<PieceSelectComponent>()
+                with<BlockerComponent> {
+                    this.color = color
+                }
+                with<DirectMovementComponent> {
+                    distance = 1 // TODO: set to two and change to one with a system
+                    directions = listOf(Directions.FORWARD)
+                }
+                with<AttackComponent> {
+                    distance = 1
+                    directions = listOf(Directions.FORWARD_LEFT, Directions.FORWARD_RIGHT)
+                }
+            }
+
+    fun addRook(engine: Engine, row: Float, col: Float, color: PieceColors) =
+            engine.entity {
+                with<VisualComponent> {
+                    texture = when (color) {
+                        PieceColors.BLACK -> BLACK_ROOK
+                        PieceColors.WHITE -> WHITE_ROOK
+                    }
+                }
+                with<PositionComponent> {
+                    x = row * TILE_SIZE
+                    y = col * TILE_SIZE
+                }
+                with<PieceSelectComponent>()
+                with<BlockerComponent> {
+                    this.color = color
+                }
+                with<DirectMovementComponent> {
+                    distance = Integer.MAX_VALUE
+                    directions = listOf(Directions.FORWARD, Directions.LEFT, Directions.RIGHT, Directions.BACKWARD)
+                }
+                with<AttackComponent> {
+                    distance = Integer.MAX_VALUE
+                    directions = listOf(Directions.FORWARD, Directions.LEFT, Directions.RIGHT, Directions.BACKWARD)
+                }
+            }
+
+    fun addKnight(engine: Engine, row: Float, col: Float, color: PieceColors) =
+            engine.entity {
+                with<VisualComponent> {
+                    texture = when (color) {
+                        PieceColors.BLACK -> BLACK_KNIGHT
+                        PieceColors.WHITE -> WHITE_KNIGHT
                     }
                 }
                 with<PositionComponent> {
@@ -57,12 +112,12 @@ object EntityFactory {
                 }
             }
 
-    fun addRook(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
+    fun addBishop(engine: Engine, row: Float, col: Float, color: PieceColors) =
             engine.entity {
                 with<VisualComponent> {
                     texture = when (color) {
-                        PIECE_COLOR.BLACK -> BLACK_ROOK
-                        PIECE_COLOR.WHITE -> WHITE_ROOK
+                        PieceColors.BLACK -> BLACK_BISHOP
+                        PieceColors.WHITE -> WHITE_BISHOP
                     }
                 }
                 with<PositionComponent> {
@@ -72,15 +127,23 @@ object EntityFactory {
                 with<PieceSelectComponent>()
                 with<BlockerComponent> {
                     this.color = color
+                }
+                with<DirectMovementComponent> {
+                    distance = Integer.MAX_VALUE
+                    directions = listOf(Directions.FORWARD_LEFT, Directions.FORWARD_RIGHT, Directions.BACKWARD_RIGHT, Directions.BACKWARD_LEFT)
+                }
+                with<AttackComponent> {
+                    distance = Integer.MAX_VALUE
+                    directions = listOf(Directions.FORWARD_LEFT, Directions.FORWARD_RIGHT, Directions.BACKWARD_RIGHT, Directions.BACKWARD_LEFT)
                 }
             }
 
-    fun addKnight(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
+    fun addQueen(engine: Engine, row: Float, col: Float, color: PieceColors) =
             engine.entity {
                 with<VisualComponent> {
                     texture = when (color) {
-                        PIECE_COLOR.BLACK -> BLACK_KNIGHT
-                        PIECE_COLOR.WHITE -> WHITE_KNIGHT
+                        PieceColors.BLACK -> BLACK_QUEEN
+                        PieceColors.WHITE -> WHITE_QUEEN
                     }
                 }
                 with<PositionComponent> {
@@ -90,15 +153,23 @@ object EntityFactory {
                 with<PieceSelectComponent>()
                 with<BlockerComponent> {
                     this.color = color
+                }
+                with<DirectMovementComponent> {
+                    distance = Integer.MAX_VALUE
+                    directions = Directions.values().toList()
+                }
+                with<AttackComponent> {
+                    distance = Integer.MAX_VALUE
+                    directions = Directions.values().toList()
                 }
             }
 
-    fun addBishop(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
+    fun addKing(engine: Engine, row: Float, col: Float, color: PieceColors) =
             engine.entity {
                 with<VisualComponent> {
                     texture = when (color) {
-                        PIECE_COLOR.BLACK -> BLACK_BISHOP
-                        PIECE_COLOR.WHITE -> WHITE_BISHOP
+                        PieceColors.BLACK -> BLACK_KING
+                        PieceColors.WHITE -> WHITE_KING
                     }
                 }
                 with<PositionComponent> {
@@ -109,41 +180,13 @@ object EntityFactory {
                 with<BlockerComponent> {
                     this.color = color
                 }
-            }
-
-    fun addQueen(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
-            engine.entity {
-                with<VisualComponent> {
-                    texture = when (color) {
-                        PIECE_COLOR.BLACK -> BLACK_QUEEN
-                        PIECE_COLOR.WHITE -> WHITE_QUEEN
-                    }
+                with<DirectMovementComponent> {
+                    distance = 1
+                    directions = Directions.values().toList()
                 }
-                with<PositionComponent> {
-                    x = row * TILE_SIZE
-                    y = col * TILE_SIZE
-                }
-                with<PieceSelectComponent>()
-                with<BlockerComponent> {
-                    this.color = color
-                }
-            }
-
-    fun addKing(engine: Engine, row: Float, col: Float, color: PIECE_COLOR) =
-            engine.entity {
-                with<VisualComponent> {
-                    texture = when (color) {
-                        PIECE_COLOR.BLACK -> BLACK_KING
-                        PIECE_COLOR.WHITE -> WHITE_KING
-                    }
-                }
-                with<PositionComponent> {
-                    x = row * TILE_SIZE
-                    y = col * TILE_SIZE
-                }
-                with<PieceSelectComponent>()
-                with<BlockerComponent> {
-                    this.color = color
+                with<AttackComponent> {
+                    distance = 1
+                    directions = Directions.values().toList()
                 }
             }
 }

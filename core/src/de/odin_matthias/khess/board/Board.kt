@@ -8,7 +8,7 @@ import de.odin_matthias.khess.EntityFactory.addPawn
 import de.odin_matthias.khess.EntityFactory.addQueen
 import de.odin_matthias.khess.EntityFactory.addRook
 import de.odin_matthias.khess.EntityFactory.addTile
-import de.odin_matthias.khess.PIECE_COLOR
+import de.odin_matthias.khess.PieceColors
 import de.odin_matthias.khess.systems.PieceSelectSystem
 import de.odin_matthias.khess.systems.RenderSystem
 
@@ -42,37 +42,37 @@ class Board(private val width: Int, private val height: Int) {
 
     private fun generateBlackPieces() {
         for (row in 0 until width) {
-            addPawn(engine, row.toFloat(), 1f, PIECE_COLOR.BLACK)
+            addPawn(engine, row.toFloat(), 1f, PieceColors.BLACK)
         }
 
-        addRook(engine, 0f, 0f, PIECE_COLOR.BLACK)
-        addRook(engine, 7f, 0f, PIECE_COLOR.BLACK)
+        addRook(engine, 0f, 0f, PieceColors.BLACK)
+        addRook(engine, 7f, 0f, PieceColors.BLACK)
 
-        addKnight(engine, 1f, 0f, PIECE_COLOR.BLACK)
-        addKnight(engine, 6f, 0f, PIECE_COLOR.BLACK)
+        addKnight(engine, 1f, 0f, PieceColors.BLACK)
+        addKnight(engine, 6f, 0f, PieceColors.BLACK)
 
-        addBishop(engine, 2f, 0f, PIECE_COLOR.BLACK)
-        addBishop(engine, 5f, 0f, PIECE_COLOR.BLACK)
+        addBishop(engine, 2f, 0f, PieceColors.BLACK)
+        addBishop(engine, 5f, 0f, PieceColors.BLACK)
 
-        addQueen(engine, 3f, 0f, PIECE_COLOR.BLACK)
-        addKing(engine, 4f, 0f, PIECE_COLOR.BLACK)
+        addQueen(engine, 3f, 0f, PieceColors.BLACK)
+        addKing(engine, 4f, 0f, PieceColors.BLACK)
     }
 
     private fun generateWhitePieces() {
         for (row in 0 until width) {
-            addPawn(engine, row.toFloat(), 6f, PIECE_COLOR.WHITE)
+            addPawn(engine, row.toFloat(), 6f, PieceColors.WHITE)
         }
 
-        addRook(engine, 0f, 7f, PIECE_COLOR.WHITE)
-        addRook(engine, 7f, 7f, PIECE_COLOR.WHITE)
+        addRook(engine, 0f, 7f, PieceColors.WHITE)
+        addRook(engine, 7f, 7f, PieceColors.WHITE)
 
-        addKnight(engine, 1f, 7f, PIECE_COLOR.WHITE)
-        addKnight(engine, 6f, 7f, PIECE_COLOR.WHITE)
+        addKnight(engine, 1f, 7f, PieceColors.WHITE)
+        addKnight(engine, 6f, 7f, PieceColors.WHITE)
 
-        addBishop(engine, 2f, 7f, PIECE_COLOR.WHITE)
-        addBishop(engine, 5f, 7f, PIECE_COLOR.WHITE)
+        addBishop(engine, 2f, 7f, PieceColors.WHITE)
+        addBishop(engine, 5f, 7f, PieceColors.WHITE)
 
-        addQueen(engine, 3f, 7f, PIECE_COLOR.WHITE)
-        addKing(engine, 4f, 7f, PIECE_COLOR.WHITE)
+        addQueen(engine, 3f, 7f, PieceColors.WHITE)
+        addKing(engine, 4f, 7f, PieceColors.WHITE)
     }
 }
