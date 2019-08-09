@@ -21,6 +21,7 @@ object PieceSelectSystem : EntitySystem() {
     private val position = mapperFor<PositionComponent>()
     private val selected = mapperFor<PieceSelectComponent>()
 
+
     override fun addedToEngine(engine: Engine) {
         entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class).get())
     }

@@ -1,10 +1,7 @@
 package de.odin_matthias.khess
 
 import com.badlogic.ashley.core.Engine
-import de.odin_matthias.khess.components.BlockerComponent
-import de.odin_matthias.khess.components.PieceSelectComponent
-import de.odin_matthias.khess.components.PositionComponent
-import de.odin_matthias.khess.components.VisualComponent
+import de.odin_matthias.khess.components.*
 import de.odin_matthias.khess.components.movement.AttackComponent
 import de.odin_matthias.khess.components.movement.DirectMovementComponent
 import de.odin_matthias.khess.components.movement.Directions
@@ -55,9 +52,8 @@ object EntityFactory {
                     y = col * TILE_SIZE
                 }
                 with<PieceSelectComponent>()
-                with<BlockerComponent> {
-                    this.color = color
-                }
+                with<BlockerComponent>()
+                with<ColorComponent> { this.color = color }
                 with<DirectMovementComponent> {
                     distance = 1 // TODO: set to two and change to one with a system
                     directions = listOf(Directions.FORWARD)
@@ -66,6 +62,7 @@ object EntityFactory {
                     distance = 1
                     directions = listOf(Directions.FORWARD_LEFT, Directions.FORWARD_RIGHT)
                 }
+                with<AttackableComponent>()
             }
 
     fun addRook(engine: Engine, row: Float, col: Float, color: PieceColors) =
@@ -81,9 +78,8 @@ object EntityFactory {
                     y = col * TILE_SIZE
                 }
                 with<PieceSelectComponent>()
-                with<BlockerComponent> {
-                    this.color = color
-                }
+                with<BlockerComponent>()
+                with<ColorComponent> { this.color = color }
                 with<DirectMovementComponent> {
                     distance = Integer.MAX_VALUE
                     directions = listOf(Directions.FORWARD, Directions.LEFT, Directions.RIGHT, Directions.BACKWARD)
@@ -92,6 +88,7 @@ object EntityFactory {
                     distance = Integer.MAX_VALUE
                     directions = listOf(Directions.FORWARD, Directions.LEFT, Directions.RIGHT, Directions.BACKWARD)
                 }
+                with<AttackableComponent>()
             }
 
     fun addKnight(engine: Engine, row: Float, col: Float, color: PieceColors) =
@@ -107,9 +104,9 @@ object EntityFactory {
                     y = col * TILE_SIZE
                 }
                 with<PieceSelectComponent>()
-                with<BlockerComponent> {
-                    this.color = color
-                }
+                with<BlockerComponent>()
+                with<ColorComponent> { this.color = color }
+                with<AttackableComponent>()
             }
 
     fun addBishop(engine: Engine, row: Float, col: Float, color: PieceColors) =
@@ -125,9 +122,8 @@ object EntityFactory {
                     y = col * TILE_SIZE
                 }
                 with<PieceSelectComponent>()
-                with<BlockerComponent> {
-                    this.color = color
-                }
+                with<BlockerComponent>()
+                with<ColorComponent> { this.color = color }
                 with<DirectMovementComponent> {
                     distance = Integer.MAX_VALUE
                     directions = listOf(Directions.FORWARD_LEFT, Directions.FORWARD_RIGHT, Directions.BACKWARD_RIGHT, Directions.BACKWARD_LEFT)
@@ -136,6 +132,7 @@ object EntityFactory {
                     distance = Integer.MAX_VALUE
                     directions = listOf(Directions.FORWARD_LEFT, Directions.FORWARD_RIGHT, Directions.BACKWARD_RIGHT, Directions.BACKWARD_LEFT)
                 }
+                with<AttackableComponent>()
             }
 
     fun addQueen(engine: Engine, row: Float, col: Float, color: PieceColors) =
@@ -151,9 +148,8 @@ object EntityFactory {
                     y = col * TILE_SIZE
                 }
                 with<PieceSelectComponent>()
-                with<BlockerComponent> {
-                    this.color = color
-                }
+                with<BlockerComponent>()
+                with<ColorComponent> { this.color = color }
                 with<DirectMovementComponent> {
                     distance = Integer.MAX_VALUE
                     directions = Directions.values().toList()
@@ -162,6 +158,7 @@ object EntityFactory {
                     distance = Integer.MAX_VALUE
                     directions = Directions.values().toList()
                 }
+                with<AttackableComponent>()
             }
 
     fun addKing(engine: Engine, row: Float, col: Float, color: PieceColors) =
@@ -177,9 +174,8 @@ object EntityFactory {
                     y = col * TILE_SIZE
                 }
                 with<PieceSelectComponent>()
-                with<BlockerComponent> {
-                    this.color = color
-                }
+                with<BlockerComponent>()
+                with<ColorComponent> { this.color = color }
                 with<DirectMovementComponent> {
                     distance = 1
                     directions = Directions.values().toList()
@@ -188,5 +184,6 @@ object EntityFactory {
                     distance = 1
                     directions = Directions.values().toList()
                 }
+                with<AttackableComponent>()
             }
 }

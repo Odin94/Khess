@@ -7,12 +7,12 @@ import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import de.odin_matthias.khess.Camera
+import de.odin_matthias.khess.components.AttackableComponent
 import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.VisualComponent
 import de.odin_matthias.khess.resources.TextureRepository.SELECTION_HIGHLIGHT
 import ktx.ashley.allOf
-import ktx.ashley.has
 import ktx.ashley.mapperFor
 
 
@@ -22,7 +22,7 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val c
     private val position = mapperFor<PositionComponent>()
     private val visual = mapperFor<VisualComponent>()
     private val pieceSelect = mapperFor<PieceSelectComponent>()
-
+    private val attackable = mapperFor<AttackableComponent>()
 
 
     override fun addedToEngine(engine: Engine) {
@@ -40,7 +40,10 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val c
 
             batch.draw(visual.texture, position.x, position.y)
 
-            if (it.has(pieceSelect) && pieceSelect.get(it).selected) {
+            if (pieceSelect.get(it)?.selected == true) {
+                batch.draw(SELECTION_HIGHLIGHT, position.x, position.y)
+            }
+            if (attackable.get(it)?.attackableBySelectedPiece == true) {
                 batch.draw(SELECTION_HIGHLIGHT, position.x, position.y)
             }
         }

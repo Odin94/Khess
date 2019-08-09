@@ -1,6 +1,7 @@
 package de.odin_matthias.khess.components.movement
 
 import com.badlogic.gdx.math.Vector2
+import de.odin_matthias.khess.PieceColors
 
 
 enum class Directions {
@@ -13,6 +14,8 @@ enum class Directions {
     FORWARD_LEFT,
     BACKWARD_LEFT
 }
+
+typealias DirectionsToNumbers = Map<Directions, Vector2>
 
 val directionsToNumbersTop = mapOf(
         Directions.FORWARD to Vector2(0F, 1F),
@@ -28,3 +31,8 @@ val directionsToNumbersTop = mapOf(
 val directionsToNumbersBottom = directionsToNumbersTop.mapValues { (_, value) ->
     Vector2(value.x, -value.y)
 }
+
+val colorToDirection = mapOf(
+        PieceColors.WHITE to directionsToNumbersTop,
+        PieceColors.BLACK to directionsToNumbersBottom
+)
