@@ -17,6 +17,7 @@ import ktx.ashley.mapperFor
 
 object AttackableBySelectedPieceSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
+    private lateinit var blockers: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()
     private val attacker = mapperFor<AttackComponent>()
@@ -26,13 +27,14 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
 
     override fun addedToEngine(engine: Engine) {
         entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class).get())
+        blockers = engine.getEntitiesFor(allOf(BlockerComponent::class).get())
     }
 
     override fun update(deltaTime: Float) {
 
     }
 
-    fun onSelect() {
+    fun onSelectOrDeselect() {
         entities.forEach {
             attackable.get(it)?.attackableBySelectedPiece = false
         }
@@ -52,16 +54,20 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
     }
 
     private fun markAttackableOpponentPieces(selectedPos: Vector2, originalDirectionVector: Vector2, opponentPieces: List<Entity>, distance: Int) {
-        var field = Vector2(selectedPos).add(originalDirectionVector)
+        var field = selectedPos
 
-        var travelledDistance = 1
+        var travelledDistance = 0
         while (isWithinBounds(field) && travelledDistance < distance) {
+            field.add(originalDirectionVector)
+            travelledDistance++
+
             val opponent = opponentPieces.firstOrNull {
                 position.get(it).coordVector == Vector2(field).add(originalDirectionVector)
             }
 
-            field.add(originalDirectionVector)
-            travelledDistance++
+            if (blockers.any { position.get(it).coordVector == Vector2(field).add(originalDirectionVector) })
+                break
+
             if (opponent != null) {
                 attackable.get(opponent).attackableBySelectedPiece = true
                 if (opponent.has(blocker)) break
