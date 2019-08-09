@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.utils.ImmutableArray
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
 import de.odin_matthias.khess.components.AttackableComponent
 import de.odin_matthias.khess.components.ColorComponent
@@ -16,7 +17,7 @@ import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-class AttackableBySelectedPieceSystem : EntitySystem() {
+object AttackableBySelectedPieceSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()
@@ -30,6 +31,10 @@ class AttackableBySelectedPieceSystem : EntitySystem() {
     }
 
     override fun update(deltaTime: Float) {
+
+    }
+
+    fun onSelect() {
         entities.forEach {
             attackable.get(it).attackableBySelectedPiece = false
         }
@@ -61,6 +66,7 @@ class AttackableBySelectedPieceSystem : EntitySystem() {
                 position.get(it).coordVector == Vector2(field).add(originalDirectionVector)
             }
 
+            Gdx.app.log("", "[$originalDirectionVector] -> $field")
             field.add(originalDirectionVector)
             travelledDistance++
             if (opponent != null) {

@@ -1,6 +1,7 @@
 package de.odin_matthias.khess
 
 import com.badlogic.gdx.InputProcessor
+import de.odin_matthias.khess.systems.AttackableBySelectedPieceSystem
 import de.odin_matthias.khess.systems.PieceSelectSystem
 
 
@@ -8,6 +9,7 @@ object InputReceiver : InputProcessor {
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val selectedAPiece = PieceSelectSystem.select()
+        if (selectedAPiece) AttackableBySelectedPieceSystem.onSelect()
 
         return true
     }

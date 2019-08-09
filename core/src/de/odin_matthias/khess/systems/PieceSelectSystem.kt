@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.utils.ImmutableArray
-import com.badlogic.gdx.Gdx
 import de.odin_matthias.khess.Camera
 import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
@@ -44,7 +43,7 @@ object PieceSelectSystem : EntitySystem() {
         val piecePos = position.get(piece)
         val (x, y) = Camera.getMousePosInGameWorld()
 
-        Gdx.app.log("PieceSelectSystem", "x: $x, y: $y")
+//        Gdx.app.log("PieceSelectSystem", "x: $x, y: $y")
 
         return x > piecePos.x && x < piecePos.x + TILE_SIZE && y > piecePos.y && y < piecePos.y + TILE_SIZE
     }
