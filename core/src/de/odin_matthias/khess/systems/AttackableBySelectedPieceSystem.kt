@@ -5,14 +5,13 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Vector2
-import de.odin_matthias.khess.components.AttackableComponent
-import de.odin_matthias.khess.components.ColorComponent
-import de.odin_matthias.khess.components.PieceSelectComponent
-import de.odin_matthias.khess.components.PositionComponent
+import de.odin_matthias.khess.components.*
 import de.odin_matthias.khess.components.movement.AttackComponent
 import de.odin_matthias.khess.components.movement.colorToDirection
-import de.odin_matthias.khess.game.GameConfig.BOARD_DIMENSION
+import de.odin_matthias.khess.extensions.isWithinBounds
+import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
+import ktx.ashley.has
 import ktx.ashley.mapperFor
 
 
@@ -20,9 +19,9 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()
-    private val selected = mapperFor<PieceSelectComponent>()
     private val attacker = mapperFor<AttackComponent>()
     private val attackable = mapperFor<AttackableComponent>()
+    private val blocker = mapperFor<BlockerComponent>()
     private val color = mapperFor<ColorComponent>()
 
     override fun addedToEngine(engine: Engine) {
@@ -35,7 +34,7 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
 
     fun onSelect() {
         entities.forEach {
-            attackable.get(it).attackableBySelectedPiece = false
+            attackable.get(it)?.attackableBySelectedPiece = false
         }
 
         getSelectedPiece()?.let {
@@ -52,15 +51,11 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
         }
     }
 
-    private fun isWithinBounds(pos: Vector2): Boolean {
-        return pos.x >= 0 && pos.y >= 0 && pos.x <= BOARD_DIMENSION && pos.y <= BOARD_DIMENSION
-    }
-
     private fun markAttackableOpponentPieces(selectedPos: Vector2, originalDirectionVector: Vector2, opponentPieces: List<Entity>, distance: Int) {
         var field = Vector2(selectedPos).add(originalDirectionVector)
 
         var travelledDistance = 1
-        while (isWithinBounds(field) && travelledDistance <= distance) {
+        while (isWithinBounds(field) && travelledDistance < distance) {
             val opponent = opponentPieces.firstOrNull {
                 position.get(it).coordVector == Vector2(field).add(originalDirectionVector)
             }
@@ -69,10 +64,8 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
             travelledDistance++
             if (opponent != null) {
                 attackable.get(opponent).attackableBySelectedPiece = true
-                break
+                if (opponent.has(blocker)) break
             }
         }
     }
-
-    private fun getSelectedPiece() = entities.firstOrNull { selected.get(it).selected }
 }
