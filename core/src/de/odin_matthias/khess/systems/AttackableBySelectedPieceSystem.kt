@@ -58,7 +58,7 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
     }
 
     private fun markAttackableOpponentPieces(selectedPos: Vector2, originalDirectionVector: Vector2, opponentPieces: List<Entity>, distance: Int) {
-        var field = selectedPos.add(originalDirectionVector)
+        var field = Vector2(selectedPos).add(originalDirectionVector)
 
         var travelledDistance = 1
         while (isWithinBounds(field) && travelledDistance <= distance) {
@@ -66,7 +66,6 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
                 position.get(it).coordVector == Vector2(field).add(originalDirectionVector)
             }
 
-            Gdx.app.log("", "[$originalDirectionVector] -> $field")
             field.add(originalDirectionVector)
             travelledDistance++
             if (opponent != null) {
