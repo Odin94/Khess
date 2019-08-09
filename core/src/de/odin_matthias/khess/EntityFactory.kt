@@ -5,6 +5,7 @@ import de.odin_matthias.khess.components.*
 import de.odin_matthias.khess.components.movement.AttackComponent
 import de.odin_matthias.khess.components.movement.DirectMovementComponent
 import de.odin_matthias.khess.components.movement.Directions
+import de.odin_matthias.khess.components.movement.WalkableComponent
 import de.odin_matthias.khess.game.GameConfig.TILE_SIZE
 import de.odin_matthias.khess.resources.TextureRepository.BLACK_BISHOP
 import de.odin_matthias.khess.resources.TextureRepository.BLACK_KING
@@ -37,6 +38,7 @@ object EntityFactory {
                     x = row * TILE_SIZE
                     y = col * TILE_SIZE
                 }
+                with<WalkableComponent>()
             }
 
     fun addPawn(engine: Engine, row: Float, col: Float, color: PieceColors) =

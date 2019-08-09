@@ -43,8 +43,8 @@ object PieceSelectSystem : EntitySystem() {
         val piecePos = position.get(piece)
         val (x, y) = Camera.getMousePosInGameWorld()
 
-//        Gdx.app.log("PieceSelectSystem", "x: $x, y: $y")
-
         return x > piecePos.x && x < piecePos.x + TILE_SIZE && y > piecePos.y && y < piecePos.y + TILE_SIZE
     }
+
+    fun getSelectedPiece() = entities.firstOrNull { selected.get(it).selected }
 }

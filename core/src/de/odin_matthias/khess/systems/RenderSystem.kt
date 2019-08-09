@@ -11,8 +11,10 @@ import de.odin_matthias.khess.components.AttackableComponent
 import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.VisualComponent
+import de.odin_matthias.khess.components.movement.WalkableComponent
 import de.odin_matthias.khess.resources.TextureRepository.ATTACKABLE_HIGHLIGHT
 import de.odin_matthias.khess.resources.TextureRepository.SELECTION_HIGHLIGHT
+import de.odin_matthias.khess.resources.TextureRepository.WALKABLE_HIGHLIGHT
 import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
@@ -24,6 +26,7 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val c
     private val visual = mapperFor<VisualComponent>()
     private val pieceSelect = mapperFor<PieceSelectComponent>()
     private val attackable = mapperFor<AttackableComponent>()
+    private val walkable = mapperFor<WalkableComponent>()
 
 
     override fun addedToEngine(engine: Engine) {
@@ -46,6 +49,9 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val c
             }
             if (attackable.get(it)?.attackableBySelectedPiece == true) {
                 batch.draw(ATTACKABLE_HIGHLIGHT, position.x, position.y)
+            }
+            if (walkable.get(it)?.walkableBySelectedPiece == true) {
+                batch.draw(WALKABLE_HIGHLIGHT, position.x, position.y)
             }
         }
         batch.end()

@@ -12,7 +12,7 @@ object TextureRepository {
 
     lateinit var SELECTION_HIGHLIGHT: Texture
     lateinit var ATTACKABLE_HIGHLIGHT: Texture
-    lateinit var MOVABLE_HIGHLIGHT: Texture
+    lateinit var WALKABLE_HIGHLIGHT: Texture
 
 
     lateinit var WHITE_PAWN: Texture
@@ -35,7 +35,7 @@ object TextureRepository {
 
         SELECTION_HIGHLIGHT = Texture("$pathPrefix/selection_highlight.png")
         ATTACKABLE_HIGHLIGHT = Texture("$pathPrefix/attackable_highlight.png")
-        MOVABLE_HIGHLIGHT = Texture("$pathPrefix/movable_highlight.png")
+        WALKABLE_HIGHLIGHT = Texture("$pathPrefix/walkable_highlight.png")
 
         WHITE_PAWN = Texture("$pathPrefix/$piecesPathPrefix/white_pawn.png")
         WHITE_ROOK = Texture("$pathPrefix/$piecesPathPrefix/white_rook.png")

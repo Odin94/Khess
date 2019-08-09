@@ -18,8 +18,8 @@ enum class Directions {
 typealias DirectionsToNumbers = Map<Directions, Vector2>
 
 val directionsToNumbersTop = mapOf(
-        Directions.FORWARD to Vector2(0F, 1F),
-        Directions.BACKWARD to Vector2(0F, -1F),
+        Directions.FORWARD to Vector2(0F, -1F),
+        Directions.BACKWARD to Vector2(0F, 1F),
         Directions.LEFT to Vector2(-1F, 0F),
         Directions.RIGHT to Vector2(1F, 0F),
         Directions.FORWARD_RIGHT to Vector2(1F, 1F),

@@ -12,6 +12,7 @@ import de.odin_matthias.khess.PieceColors
 import de.odin_matthias.khess.systems.AttackableBySelectedPieceSystem
 import de.odin_matthias.khess.systems.PieceSelectSystem
 import de.odin_matthias.khess.systems.RenderSystem
+import de.odin_matthias.khess.systems.WalkableBySelectedPieceSystem
 
 
 class Board(private val width: Int, private val height: Int) {
@@ -32,6 +33,7 @@ class Board(private val width: Int, private val height: Int) {
         engine.addSystem(RenderSystem())
         engine.addSystem(PieceSelectSystem)
         engine.addSystem(AttackableBySelectedPieceSystem)
+        engine.addSystem(WalkableBySelectedPieceSystem)
     }
 
     private fun generateTiles(width: Int, height: Int) = also {
