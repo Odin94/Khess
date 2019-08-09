@@ -11,6 +11,7 @@ import de.odin_matthias.khess.components.AttackableComponent
 import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.VisualComponent
+import de.odin_matthias.khess.resources.TextureRepository.ATTACKABLE_HIGHLIGHT
 import de.odin_matthias.khess.resources.TextureRepository.SELECTION_HIGHLIGHT
 import ktx.ashley.allOf
 import ktx.ashley.mapperFor
@@ -44,7 +45,7 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val c
                 batch.draw(SELECTION_HIGHLIGHT, position.x, position.y)
             }
             if (attackable.get(it)?.attackableBySelectedPiece == true) {
-                batch.draw(SELECTION_HIGHLIGHT, position.x, position.y)
+                batch.draw(ATTACKABLE_HIGHLIGHT, position.x, position.y)
             }
         }
         batch.end()
