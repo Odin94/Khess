@@ -29,7 +29,7 @@ object EntityFactory {
     fun addTile(engine: Engine, row: Float, col: Float) =
             engine.entity {
                 with<VisualComponent> {
-                    texture = if (row % 2 == col % 2) WHITE_TILE else BLACK_TILE
+                    texture = if (row % 2 == col % 2) BLACK_TILE else WHITE_TILE
                 }
                 with<PositionComponent> {
                     x = row * TILE_SIZE

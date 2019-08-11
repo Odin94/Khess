@@ -28,6 +28,7 @@ class Board(private val width: Int, private val height: Int) {
 
     private fun generateSystems() {
         engine.addSystem(RenderSystem())
+        // TODO: turn systems into classes and get them across systems with engine.getSystem(system::class)
         engine.addSystem(PieceSelectSystem)
         engine.addSystem(AttackableBySelectedPieceSystem)
         engine.addSystem(WalkableBySelectedPieceSystem)
@@ -59,8 +60,8 @@ class Board(private val width: Int, private val height: Int) {
         addBishop(engine, 2f, 0f, PieceColors.BLACK)
         addBishop(engine, 5f, 0f, PieceColors.BLACK)
 
-        addQueen(engine, 3f, 0f, PieceColors.BLACK)
-        addKing(engine, 4f, 0f, PieceColors.BLACK)
+        addKing(engine, 3f, 0f, PieceColors.BLACK)
+        addQueen(engine, 4f, 0f, PieceColors.BLACK)
     }
 
     private fun generateWhitePieces() {
@@ -77,7 +78,7 @@ class Board(private val width: Int, private val height: Int) {
         addBishop(engine, 2f, 7f, PieceColors.WHITE)
         addBishop(engine, 5f, 7f, PieceColors.WHITE)
 
-        addQueen(engine, 3f, 7f, PieceColors.WHITE)
-        addKing(engine, 4f, 7f, PieceColors.WHITE)
+        addKing(engine, 3f, 7f, PieceColors.WHITE)
+        addQueen(engine, 4f, 7f, PieceColors.WHITE)
     }
 }
