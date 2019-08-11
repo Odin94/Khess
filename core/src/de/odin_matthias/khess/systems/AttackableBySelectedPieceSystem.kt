@@ -11,7 +11,6 @@ import de.odin_matthias.khess.components.movement.colorToDirection
 import de.odin_matthias.khess.extensions.isWithinBounds
 import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
-import ktx.ashley.has
 import ktx.ashley.mapperFor
 
 
@@ -65,13 +64,12 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
                 position.get(it).coordVector == field
             }
 
-            if (blockers.any { position.get(it).coordVector == field })
-                break
-
             if (opponent != null) {
                 attackable.get(opponent).attackableBySelectedPiece = true
-                if (opponent.has(blocker)) break
             }
+
+            if (blockers.any { position.get(it).coordVector == field })
+                break
         }
     }
 }
