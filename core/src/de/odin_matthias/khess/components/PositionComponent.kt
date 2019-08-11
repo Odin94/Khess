@@ -9,9 +9,17 @@ class PositionComponent() : Component {
     var x: Float = 0F
     var y: Float = 0F
 
-    val vector: Vector2
+    var vector: Vector2
         get() = Vector2(x, y)
+        set(pos) {
+            x = pos.x
+            y = pos.y
+        }
 
-    val coordVector: Vector2
+    var coordVector: Vector2
         get() = Vector2(x / TILE_SIZE, y / TILE_SIZE)
+        set(pos) {
+            x = pos.x * TILE_SIZE
+            y = pos.y * TILE_SIZE
+        }
 }

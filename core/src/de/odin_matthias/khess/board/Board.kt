@@ -9,10 +9,7 @@ import de.odin_matthias.khess.EntityFactory.addQueen
 import de.odin_matthias.khess.EntityFactory.addRook
 import de.odin_matthias.khess.EntityFactory.addTile
 import de.odin_matthias.khess.PieceColors
-import de.odin_matthias.khess.systems.AttackableBySelectedPieceSystem
-import de.odin_matthias.khess.systems.PieceSelectSystem
-import de.odin_matthias.khess.systems.RenderSystem
-import de.odin_matthias.khess.systems.WalkableBySelectedPieceSystem
+import de.odin_matthias.khess.systems.*
 
 
 class Board(private val width: Int, private val height: Int) {
@@ -34,6 +31,7 @@ class Board(private val width: Int, private val height: Int) {
         engine.addSystem(PieceSelectSystem)
         engine.addSystem(AttackableBySelectedPieceSystem)
         engine.addSystem(WalkableBySelectedPieceSystem)
+        engine.addSystem(MovementSystem)
     }
 
     private fun generateTiles(width: Int, height: Int) = also {

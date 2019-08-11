@@ -4,12 +4,13 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.utils.ImmutableArray
+import com.badlogic.gdx.math.Vector2
 import de.odin_matthias.khess.Camera
 import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.extensions.component1
 import de.odin_matthias.khess.extensions.component2
-import de.odin_matthias.khess.game.GameConfig.TILE_SIZE
+import de.odin_matthias.khess.extensions.isPointInTile
 import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
@@ -43,7 +44,7 @@ object PieceSelectSystem : EntitySystem() {
         val piecePos = position.get(piece)
         val (x, y) = Camera.getMousePosInGameWorld()
 
-        return x > piecePos.x && x < piecePos.x + TILE_SIZE && y > piecePos.y && y < piecePos.y + TILE_SIZE
+        return isPointInTile(Vector2(x, y), piecePos.vector)
     }
 
     fun getSelectedPiece() = entities.firstOrNull { selected.get(it).selected }
