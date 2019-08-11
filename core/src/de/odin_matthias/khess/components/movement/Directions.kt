@@ -22,10 +22,10 @@ val directionsToNumbersTop = mapOf(
         Directions.BACKWARD to Vector2(0F, 1F),
         Directions.LEFT to Vector2(-1F, 0F),
         Directions.RIGHT to Vector2(1F, 0F),
-        Directions.FORWARD_RIGHT to Vector2(1F, 1F),
-        Directions.BACKWARD_RIGHT to Vector2(1F, -1F),
-        Directions.FORWARD_LEFT to Vector2(-1F, 1F),
-        Directions.BACKWARD_LEFT to Vector2(-1F, -1F)
+        Directions.FORWARD_RIGHT to Vector2(1F, -1F),
+        Directions.BACKWARD_RIGHT to Vector2(1F, 1F),
+        Directions.FORWARD_LEFT to Vector2(-1F, -1F),
+        Directions.BACKWARD_LEFT to Vector2(-1F, 1F)
 )
 
 val directionsToNumbersBottom = directionsToNumbersTop.mapValues { (_, value) ->

@@ -44,7 +44,7 @@ object AttackSystem : EntitySystem() {
                 position.get(selected).vector = position.get(attackable).vector
                 engine.removeEntity(attackable)
 
-                triggerSystems()
+                triggerSystems(selected)
 
                 return true
             }
@@ -53,7 +53,8 @@ object AttackSystem : EntitySystem() {
         return false
     }
 
-    private fun triggerSystems() {
+    private fun triggerSystems(entity: Entity) {
+        DistanceModifierSystem.trigger(entity)
         WalkableBySelectedPieceSystem.trigger()
         AttackableBySelectedPieceSystem.trigger()
     }

@@ -22,7 +22,6 @@ object MovementSystem : EntitySystem() {
     private lateinit var walkables: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()
-    private val selected = mapperFor<PieceSelectComponent>()
     private val walkable = mapperFor<WalkableComponent>()
 
 
@@ -44,7 +43,7 @@ object MovementSystem : EntitySystem() {
             getSelectedWalkable()?.let { walkable ->
                 position.get(selected).vector = position.get(walkable).vector
 
-                triggerSystems()
+                triggerSystems(selected)
 
                 return true
             }
@@ -53,7 +52,8 @@ object MovementSystem : EntitySystem() {
         return false
     }
 
-    private fun triggerSystems() {
+    private fun triggerSystems(entity: Entity) {
+        DistanceModifierSystem.trigger(entity)
         WalkableBySelectedPieceSystem.trigger()
         AttackableBySelectedPieceSystem.trigger()
     }

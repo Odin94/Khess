@@ -57,9 +57,10 @@ object EntityFactory {
                 with<BlockerComponent>()
                 with<ColorComponent> { this.color = color }
                 with<DirectMovementComponent> {
-                    distance = 1 // TODO: set to two and change to one with a system
+                    distance = 2
                     directions = listOf(Directions.FORWARD)
                 }
+                with<DistanceModifierComponent> { newDistance = 1 }
                 with<AttackComponent> {
                     distance = 1
                     directions = listOf(Directions.FORWARD_LEFT, Directions.FORWARD_RIGHT)
