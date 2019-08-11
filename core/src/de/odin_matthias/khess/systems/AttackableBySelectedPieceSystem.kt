@@ -21,7 +21,6 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
     private val position = mapperFor<PositionComponent>()
     private val attacker = mapperFor<AttackComponent>()
     private val attackable = mapperFor<AttackableComponent>()
-    private val blocker = mapperFor<BlockerComponent>()
     private val color = mapperFor<ColorComponent>()
 
     override fun addedToEngine(engine: Engine) {

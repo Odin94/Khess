@@ -2,6 +2,7 @@ package de.odin_matthias.khess
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
+import de.odin_matthias.khess.systems.AttackSystem
 import de.odin_matthias.khess.systems.MovementSystem
 import de.odin_matthias.khess.systems.PieceSelectSystem
 
@@ -12,7 +13,8 @@ object InputReceiver : InputProcessor {
         if (button == Input.Buttons.LEFT) {
             val selectedAPiece = PieceSelectSystem.select()
         } else if (button == Input.Buttons.RIGHT) {
-            MovementSystem.move()
+            val moved = MovementSystem.move()
+            if (!moved) AttackSystem.attack()
         }
 
 
