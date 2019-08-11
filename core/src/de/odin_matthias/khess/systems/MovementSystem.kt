@@ -39,11 +39,19 @@ object MovementSystem : EntitySystem() {
         getSelectedPiece()?.let { selected ->
             getSelectedWalkable()?.let { walkable ->
                 position.get(selected).vector = position.get(walkable).vector
+
+                triggerSystems()
+
                 return true
             }
         }
 
         return false
+    }
+
+    private fun triggerSystems() {
+        WalkableBySelectedPieceSystem.trigger()
+        AttackableBySelectedPieceSystem.trigger()
     }
 
     private fun getSelectedWalkable(): Entity? {

@@ -34,7 +34,7 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
 
     }
 
-    fun onSelectOrDeselect() {
+    fun trigger() {
         attackablePieces.forEach {
             attackable.get(it).attackableBySelectedPiece = false
         }

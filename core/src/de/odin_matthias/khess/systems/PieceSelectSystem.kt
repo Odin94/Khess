@@ -34,10 +34,18 @@ object PieceSelectSystem : EntitySystem() {
         var selectedAPiece = false
         entities.forEach {
             selected.get(it).selected = clickHitPiece(it)
-            if (selected.get(it).selected) selectedAPiece = true
+            if (selected.get(it).selected) {
+                selectedAPiece = true
+                triggerSystems()
+            }
         }
 
         return selectedAPiece
+    }
+
+    private fun triggerSystems() {
+        WalkableBySelectedPieceSystem.trigger()
+        AttackableBySelectedPieceSystem.trigger()
     }
 
     private fun clickHitPiece(piece: Entity): Boolean {

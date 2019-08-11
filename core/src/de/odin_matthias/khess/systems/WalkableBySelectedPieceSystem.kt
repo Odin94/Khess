@@ -39,7 +39,7 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
 
     }
 
-    fun onSelectOrDeselect() {
+    fun trigger() {
         tiles.forEach {
             walkable.get(it)?.walkableBySelectedPiece = false
         }
