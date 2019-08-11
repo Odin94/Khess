@@ -22,7 +22,7 @@ object PieceSelectSystem : EntitySystem() {
 
 
     override fun addedToEngine(engine: Engine) {
-        entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class, PieceSelectComponent::class, PositionComponent::class).get())
+        entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class, PositionComponent::class).get())
     }
 
     override fun update(deltaTime: Float) {
