@@ -36,14 +36,15 @@ object PieceSelectSystem : EntitySystem() {
             selected.get(it).selected = clickHitPiece(it)
             if (selected.get(it).selected) {
                 selectedAPiece = true
-                triggerSystems()
             }
         }
 
+        triggerSystems()
         return selectedAPiece
     }
 
     private fun triggerSystems() {
+        // TODO: use signals for this?
         WalkableBySelectedPieceSystem.trigger()
         AttackableBySelectedPieceSystem.trigger()
     }

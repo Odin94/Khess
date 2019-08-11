@@ -60,7 +60,7 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
 
     private fun markWalkableTiles(selectedPos: Vector2, originalDirectionVector: Vector2,
                                   tiles: ImmutableArray<Entity>, blockers: ImmutableArray<Entity>, distance: Int) {
-        var field = selectedPos
+        val field = Vector2(selectedPos)
 
         var travelledDistance = 0
         while (isWithinBounds(field) && travelledDistance < distance) {

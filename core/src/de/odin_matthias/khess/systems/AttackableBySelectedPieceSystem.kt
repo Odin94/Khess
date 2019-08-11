@@ -54,16 +54,18 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
     }
 
     private fun markAttackableOpponentPieces(selectedPos: Vector2, originalDirectionVector: Vector2, opponentPieces: List<Entity>, distance: Int) {
+        val field = Vector2(selectedPos)
+
         var travelledDistance = 0
-        while (isWithinBounds(selectedPos) && travelledDistance < distance) {
-            selectedPos.add(originalDirectionVector)
+        while (isWithinBounds(field) && travelledDistance < distance) {
+            field.add(originalDirectionVector)
             travelledDistance++
 
             val opponent = opponentPieces.firstOrNull {
-                position.get(it).coordVector == selectedPos
+                position.get(it).coordVector == field
             }
 
-            if (blockers.any { position.get(it).coordVector == selectedPos })
+            if (blockers.any { position.get(it).coordVector == field })
                 break
 
             if (opponent != null) {
