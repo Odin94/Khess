@@ -33,6 +33,10 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val c
         entities = engine.getEntitiesFor(allOf(PositionComponent::class, VisualComponent::class).get())
     }
 
+    override fun removedFromEngine(engine: Engine) {
+        addedToEngine(engine)
+    }
+
     override fun update(deltaTime: Float) {
         camera.update()
 

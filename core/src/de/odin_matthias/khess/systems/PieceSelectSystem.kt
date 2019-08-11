@@ -26,6 +26,10 @@ object PieceSelectSystem : EntitySystem() {
         entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class, PositionComponent::class).get())
     }
 
+    override fun removedFromEngine(engine: Engine) {
+        addedToEngine(engine)
+    }
+
     override fun update(deltaTime: Float) {
 
     }

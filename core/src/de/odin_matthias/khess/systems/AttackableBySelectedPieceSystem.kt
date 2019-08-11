@@ -28,6 +28,10 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
         blockers = engine.getEntitiesFor(allOf(BlockerComponent::class).get())
     }
 
+    override fun removedFromEngine(engine: Engine) {
+        addedToEngine(engine)
+    }
+
     override fun update(deltaTime: Float) {
 
     }

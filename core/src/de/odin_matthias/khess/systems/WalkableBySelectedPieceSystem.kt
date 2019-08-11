@@ -35,6 +35,10 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
         tiles = engine.getEntitiesFor(allOf(WalkableComponent::class).get())
     }
 
+    override fun removedFromEngine(engine: Engine) {
+        addedToEngine(engine)
+    }
+
     override fun update(deltaTime: Float) {
 
     }

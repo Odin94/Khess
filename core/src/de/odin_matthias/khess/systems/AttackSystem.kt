@@ -30,6 +30,10 @@ object AttackSystem : EntitySystem() {
         attackables = engine.getEntitiesFor(allOf(AttackableComponent::class).get())
     }
 
+    override fun removedFromEngine(engine: Engine) {
+        addedToEngine(engine)
+    }
+
     override fun update(deltaTime: Float) {
 
     }
@@ -38,7 +42,7 @@ object AttackSystem : EntitySystem() {
         getSelectedPiece()?.let { selected ->
             getSelectedAttackable()?.let { attackable ->
                 position.get(selected).vector = position.get(attackable).vector
-                position.get(attackable).vector = Vector2(Float.MAX_VALUE, Float.MAX_VALUE)
+                engine.removeEntity(attackable)
 
                 triggerSystems()
 
