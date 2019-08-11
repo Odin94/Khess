@@ -10,6 +10,7 @@ import de.odin_matthias.khess.components.ColorComponent
 import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.movement.DirectMovementComponent
+import de.odin_matthias.khess.components.movement.JumpMovementComponent
 import de.odin_matthias.khess.components.movement.WalkableComponent
 import de.odin_matthias.khess.components.movement.colorToDirection
 import de.odin_matthias.khess.extensions.isWithinBounds
@@ -25,7 +26,7 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
 
     private val color = mapperFor<ColorComponent>()
     private val position = mapperFor<PositionComponent>()
-    private val blocker = mapperFor<BlockerComponent>()
+    private val jumpMover = mapperFor<JumpMovementComponent>()
     private val directMover = mapperFor<DirectMovementComponent>()
     private val walkable = mapperFor<WalkableComponent>()
 
@@ -54,21 +55,31 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
 
             val movementMap = colorToDirection.getValue(selectedPieceColor)
 
-            // TODO incorporate knight movement
             directMover.get(it)?.directions?.forEach { direction ->
-                markWalkableTiles(selectedPos, movementMap.getValue(direction), tiles, blockers, directMover.get(it).distance)
+                markDirectlyWalkableTiles(selectedPos, movementMap.getValue(direction), tiles, directMover.get(it).distance)
+            }
+            jumpMover.get(it)?.movements?.forEach { movements ->
+                markJumpinglyWalkableTiles(selectedPos, movements, tiles)
             }
         }
     }
 
+    private fun markJumpinglyWalkableTiles(selectedPos: Vector2, directionVector: Vector2, tiles: ImmutableArray<Entity>) {
+        val field = Vector2(selectedPos).add(directionVector)
+        if (isWithinBounds(field)) {
+            tiles.firstOrNull {
+                position.get(it).coordVector == field && !blockers.any { blocker -> position.get(blocker).coordVector == field }
+            }?.let { walkable.get(it).walkableBySelectedPiece = true }
+        }
+    }
 
-    private fun markWalkableTiles(selectedPos: Vector2, originalDirectionVector: Vector2,
-                                  tiles: ImmutableArray<Entity>, blockers: ImmutableArray<Entity>, distance: Int) {
+    private fun markDirectlyWalkableTiles(selectedPos: Vector2, directionVector: Vector2,
+                                          tiles: ImmutableArray<Entity>, distance: Int) {
         val field = Vector2(selectedPos)
 
         var travelledDistance = 0
         while (isWithinBounds(field) && travelledDistance < distance) {
-            field.add(originalDirectionVector)
+            field.add(directionVector)
             travelledDistance++
 
             val tile = tiles.firstOrNull {

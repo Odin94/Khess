@@ -2,10 +2,7 @@ package de.odin_matthias.khess
 
 import com.badlogic.ashley.core.Engine
 import de.odin_matthias.khess.components.*
-import de.odin_matthias.khess.components.movement.AttackComponent
-import de.odin_matthias.khess.components.movement.DirectMovementComponent
-import de.odin_matthias.khess.components.movement.Directions
-import de.odin_matthias.khess.components.movement.WalkableComponent
+import de.odin_matthias.khess.components.movement.*
 import de.odin_matthias.khess.game.GameConfig.TILE_SIZE
 import de.odin_matthias.khess.resources.TextureRepository.BLACK_BISHOP
 import de.odin_matthias.khess.resources.TextureRepository.BLACK_KING
@@ -110,6 +107,8 @@ object EntityFactory {
                 with<BlockerComponent>()
                 with<ColorComponent> { this.color = color }
                 with<AttackableComponent>()
+                with<JumpMovementComponent> { movements = knightMovements }
+                with<AttackComponent> { jumpAttacks = knightMovements }
             }
 
     fun addBishop(engine: Engine, row: Float, col: Float, color: PieceColors) =

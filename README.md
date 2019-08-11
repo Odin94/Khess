@@ -5,13 +5,14 @@ Chess in Kotlin
 * En passant
 * Castling (Kingside, Queenside)
 * 75-move rule
-* Knight movement
 * Pawn promotion
 * Stalemate
 * Turns
 * Check & Checkmate
 * Network Multiplayer
 * AI
+* Turn history & undo / redo
+* Replays
 
 ### Credits
 * Chess pieces by Buch on [OpenGameArt](https://opengameart.org/content/chess-pieces-set)

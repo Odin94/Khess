@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.utils.ImmutableArray
 import de.odin_matthias.khess.components.DistanceModifierComponent
 import de.odin_matthias.khess.components.movement.DirectMovementComponent
-import de.odin_matthias.khess.components.movement.JumpMovementComponent
 import ktx.ashley.allOf
 import ktx.ashley.has
 import ktx.ashley.mapperFor
@@ -17,7 +16,6 @@ object DistanceModifierSystem : EntitySystem() {
 
     private val distanceModifier = mapperFor<DistanceModifierComponent>()
     private val directMover = mapperFor<DirectMovementComponent>()
-    private val jumpMover = mapperFor<JumpMovementComponent>()
 
 
     override fun addedToEngine(engine: Engine) {
@@ -32,8 +30,6 @@ object DistanceModifierSystem : EntitySystem() {
         if (entity.has(distanceModifier)) {
             val newDistance = distanceModifier.get(entity).newDistance
             if (entity.has(directMover)) directMover.get(entity).distance = newDistance
-
-            // TODO: Add jumpMover
         }
     }
 }

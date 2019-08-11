@@ -48,19 +48,31 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
 
             val movementMap = colorToDirection.getValue(selectedPieceColor)
 
-            // TODO incorporate knight movement
             attacker.get(it)?.directions?.forEach { direction ->
-                markAttackableOpponentPieces(selectedPos, movementMap.getValue(direction), opponentPieces, attacker.get(it).distance)
+                markDirectlyAttackableOpponentPieces(selectedPos, movementMap.getValue(direction), opponentPieces, attacker.get(it).distance)
+            }
+            attacker.get(it)?.jumpAttacks?.forEach { attackVector ->
+                markJumpinglyAttackableOpponentPieces(selectedPos, attackVector, opponentPieces)
             }
         }
     }
 
-    private fun markAttackableOpponentPieces(selectedPos: Vector2, originalDirectionVector: Vector2, opponentPieces: List<Entity>, distance: Int) {
+    private fun markJumpinglyAttackableOpponentPieces(selectedPos: Vector2, directionVector: Vector2,
+                                                      opponentPieces: List<Entity>) {
+        val field = Vector2(selectedPos).add(directionVector)
+        if (isWithinBounds(field)) {
+            opponentPieces.firstOrNull { position.get(it).coordVector == field }
+                    ?.let { opponent -> attackable.get(opponent).attackableBySelectedPiece = true }
+        }
+    }
+
+    private fun markDirectlyAttackableOpponentPieces(selectedPos: Vector2, directionVector: Vector2,
+                                                     opponentPieces: List<Entity>, distance: Int) {
         val field = Vector2(selectedPos)
 
         var travelledDistance = 0
         while (isWithinBounds(field) && travelledDistance < distance) {
-            field.add(originalDirectionVector)
+            field.add(directionVector)
             travelledDistance++
 
             val opponent = opponentPieces.firstOrNull {
