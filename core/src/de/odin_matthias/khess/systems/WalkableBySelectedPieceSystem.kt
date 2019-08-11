@@ -52,6 +52,7 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
         getSelectedPiece()?.let {
             val selectedPos = position.get(it).coordVector
             val selectedPieceColor = color.get(it).color
+            if (selectedPieceColor != TurnSystem.color) return
 
             val movementMap = colorToDirection.getValue(selectedPieceColor)
 

@@ -53,6 +53,8 @@ object MovementSystem : EntitySystem() {
     }
 
     private fun triggerSystems(entity: Entity) {
+        TurnSystem.nextTurn()
+
         DistanceModifierSystem.trigger(entity)
         WalkableBySelectedPieceSystem.trigger()
         AttackableBySelectedPieceSystem.trigger()

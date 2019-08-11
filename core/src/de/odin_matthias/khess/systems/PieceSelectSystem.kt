@@ -48,7 +48,7 @@ object PieceSelectSystem : EntitySystem() {
     }
 
     private fun triggerSystems() {
-        // TODO: use signals for this?
+        // TODO: use signals for this?  (system trigger order matters!)
         WalkableBySelectedPieceSystem.trigger()
         AttackableBySelectedPieceSystem.trigger()
     }

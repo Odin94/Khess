@@ -44,6 +44,8 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
         getSelectedPiece()?.let {
             val selectedPos = position.get(it).coordVector
             val selectedPieceColor = color.get(it).color
+            if (selectedPieceColor != TurnSystem.color) return
+
             val opponentPieces = attackablePieces.filter { opponent -> color.get(opponent).color != selectedPieceColor }
 
             val movementMap = colorToDirection.getValue(selectedPieceColor)

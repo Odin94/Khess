@@ -7,7 +7,6 @@ Chess in Kotlin
 * 75-move rule
 * Pawn promotion
 * Stalemate
-* Turns
 * Check & Checkmate
 * Network Multiplayer
 * AI
