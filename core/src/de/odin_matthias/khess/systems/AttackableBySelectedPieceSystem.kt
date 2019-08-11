@@ -16,7 +16,7 @@ import ktx.ashley.mapperFor
 
 
 object AttackableBySelectedPieceSystem : EntitySystem() {
-    private lateinit var entities: ImmutableArray<Entity>
+    private lateinit var attackablePieces: ImmutableArray<Entity>
     private lateinit var blockers: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()
@@ -26,7 +26,7 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
     private val color = mapperFor<ColorComponent>()
 
     override fun addedToEngine(engine: Engine) {
-        entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class).get())
+        attackablePieces = engine.getEntitiesFor(allOf(PieceSelectComponent::class, AttackableComponent::class).get())
         blockers = engine.getEntitiesFor(allOf(BlockerComponent::class).get())
     }
 
@@ -35,14 +35,14 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
     }
 
     fun onSelectOrDeselect() {
-        entities.forEach {
-            attackable.get(it)?.attackableBySelectedPiece = false
+        attackablePieces.forEach {
+            attackable.get(it).attackableBySelectedPiece = false
         }
 
         getSelectedPiece()?.let {
             val selectedPos = position.get(it).coordVector
             val selectedPieceColor = color.get(it).color
-            val opponentPieces = entities.filter { opponent -> color.get(opponent).color != selectedPieceColor }
+            val opponentPieces = attackablePieces.filter { opponent -> color.get(opponent).color != selectedPieceColor }
 
             val movementMap = colorToDirection.getValue(selectedPieceColor)
 
