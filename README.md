@@ -3,7 +3,6 @@ Chess in Kotlin
 
 ### Missing Features
 * En passant
-* Castling (Kingside, Queenside)
 * 75-move rule
 * Pawn promotion
 * Stalemate
