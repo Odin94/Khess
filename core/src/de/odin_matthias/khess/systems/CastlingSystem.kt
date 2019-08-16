@@ -78,15 +78,15 @@ object CastlingSystem : EntitySystem() {
         val upper = max(position.get(piece1).coordX, position.get(piece2).coordX) - 1
         val lower = min(position.get(piece1).coordX, position.get(piece2).coordX) + 1
 
-        engine.getEntitiesFor(allOf(AttackComponent::class).get())
+        val attackablePositionsInPath = engine.getEntitiesFor(allOf(AttackComponent::class).get())
                 .filter { color.get(it).color != pieceColor }
-                .forEach {
-                    val positions = getAttackablePositions(it).filter { pos -> pos.y == position.get(piece1).coordY }
-                    if (positions.any { pos -> (lower..upper).contains(pos.x) })
-                        return false
+                .flatMap {
+                    getAttackablePositions(it)
+                            .filter { pos -> pos.y == position.get(piece1).coordY }
+                            .filter { pos -> (lower..upper).contains(pos.x) }
                 }
 
-        return true
+        return attackablePositionsInPath.isEmpty()
     }
 
     private fun getAttackablePositions(attackingPiece: Entity): Set<Vector2> {
