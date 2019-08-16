@@ -51,7 +51,7 @@ object PieceSelectSystem : EntitySystem() {
         // TODO: use signals for this?  (system trigger order matters!)
         WalkableBySelectedPieceSystem.trigger()
         AttackableBySelectedPieceSystem.trigger()
-        CastlingSystem.trigger()
+        CastleableBySelectedPieceSystem.trigger()
     }
 
     private fun clickHitPiece(piece: Entity): Boolean {

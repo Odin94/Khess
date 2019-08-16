@@ -54,7 +54,7 @@ object MovementSystem : EntitySystem() {
 
     private fun triggerSystems(entity: Entity) {
         TurnSystem.nextTurn()
-        CastlingSystem.onMoved(entity)
+        CastleableBySelectedPieceSystem.onMoved(entity)
 
         DistanceModifierSystem.trigger(entity)
         WalkableBySelectedPieceSystem.trigger()

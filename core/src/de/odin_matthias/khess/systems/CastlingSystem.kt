@@ -5,32 +5,30 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Vector2
-import de.odin_matthias.khess.components.BlockerComponent
-import de.odin_matthias.khess.components.ColorComponent
+import de.odin_matthias.khess.Camera
+import de.odin_matthias.khess.components.PieceSelectComponent
 import de.odin_matthias.khess.components.PositionComponent
-import de.odin_matthias.khess.components.movement.*
-import de.odin_matthias.khess.extensions.isWithinBounds
+import de.odin_matthias.khess.components.movement.Castlers
+import de.odin_matthias.khess.components.movement.WalkableComponent
+import de.odin_matthias.khess.extensions.component1
+import de.odin_matthias.khess.extensions.component2
+import de.odin_matthias.khess.extensions.isPointInTile
 import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
-import ktx.ashley.has
 import ktx.ashley.mapperFor
-import java.lang.Float.max
-import java.lang.Float.min
 
 
 object CastlingSystem : EntitySystem() {
-    private lateinit var blockers: ImmutableArray<Entity>
+    private lateinit var entities: ImmutableArray<Entity>
     private lateinit var tiles: ImmutableArray<Entity>
 
-    private val castler = mapperFor<CastlingComponent>()
+
     private val position = mapperFor<PositionComponent>()
-    private val color = mapperFor<ColorComponent>()
-    private val attacker = mapperFor<AttackComponent>()
     private val walkable = mapperFor<WalkableComponent>()
 
 
     override fun addedToEngine(engine: Engine) {
-        blockers = engine.getEntitiesFor(allOf(BlockerComponent::class).get())
+        entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class, PositionComponent::class).get())
         tiles = engine.getEntitiesFor(allOf(WalkableComponent::class).get())
     }
 
@@ -42,102 +40,46 @@ object CastlingSystem : EntitySystem() {
 
     }
 
-    fun trigger() {
-        tiles.forEach {
-            walkable.get(it)?.castleableBy = null
-        }
+    fun castle(): Boolean {
+        getSelectedPiece()?.let { selected ->
+            getSelectedCastlers()?.let { castlers ->
+                val castlerPosition = position.get(castlers.castler)
+                val castleTargetPosition = position.get(castlers.castleTarget)
 
-        getSelectedPiece()?.let {
-            getCastlers(it).forEach { castlers ->
-                tiles.forEach { tile ->
-                    if (position.get(tile).coordVector == position.get(castlers.castleTarget).coordVector)
-                        walkable.get(tile).castleableBy = castlers
+                if (castlerPosition.coordX > castleTargetPosition.coordX) {
+                    castlerPosition.coordX = castlerPosition.coordX - 2
+                    castleTargetPosition.coordX = castlerPosition.coordX + 1
+                } else {
+                    castlerPosition.coordX = castlerPosition.coordX + 2
+                    castleTargetPosition.coordX = castlerPosition.coordX - 1
                 }
+
+                triggerSystems(selected)
+
+                return true
             }
         }
+
+        return false
     }
 
-    fun onMoved(entity: Entity) {
-        entity.remove(CastlingComponent::class.java)
-        entity.remove(CastlingTargetComponent::class.java)
-    }
+    private fun getSelectedCastlers(): Castlers? {
+        val (x, y) = Camera.getMousePosInGameWorld()
 
-    fun getCastlers(castlingPiece: Entity): List<Castlers> {
-        if (!castlingPiece.has(castler)) return listOf()
-
-        val castlingPiecePos = position.get(castlingPiece)
-        val castleTargets = engine.getEntitiesFor(allOf(CastlingTargetComponent::class).get())
-                .asSequence()
-                .filter { color.get(it).color == color.get(castlingPiece).color }
-                .filter { position.get(it).coordY == castlingPiecePos.coordY }
-                .filter { hasUnblockedHorizontalPath(position.get(it).coordVector, castlingPiecePos.coordVector) }
-                .filter { hasUnattackedHorizontalPath(it, castlingPiece) }
-                .toList()
-
-        return castleTargets.map { Castlers(castlingPiece, it) }
-    }
-
-    private fun hasUnblockedHorizontalPath(pos1: Vector2, pos2: Vector2): Boolean {
-        val upper = max(pos1.x, pos2.x) - 1
-        val lower = min(pos1.x, pos2.x) + 1
-
-        return blockers
-                .filter { position.get(it).coordY == pos1.y }
-                .firstOrNull {
-                    (lower..upper).contains(position.get(it).coordX)
-                } == null
-    }
-
-    private fun hasUnattackedHorizontalPath(piece1: Entity, piece2: Entity): Boolean {
-        val pieceColor = color.get(piece1).color
-        val upper = max(position.get(piece1).coordX, position.get(piece2).coordX) - 1
-        val lower = min(position.get(piece1).coordX, position.get(piece2).coordX) + 1
-
-        val attackablePositionsInPath = engine.getEntitiesFor(allOf(AttackComponent::class).get())
-                .filter { color.get(it).color != pieceColor }
-                .flatMap {
-                    getAttackablePositions(it)
-                            .filter { pos -> pos.y == position.get(piece1).coordY }
-                            .filter { pos -> (lower..upper).contains(pos.x) }
-                }
-
-        return attackablePositionsInPath.isEmpty()
-    }
-
-    private fun getAttackablePositions(attackingPiece: Entity): Set<Vector2> {
-        val attackablePositions = mutableSetOf<Vector2>()
-        val pos = position.get(attackingPiece).coordVector
-        val color = color.get(attackingPiece).color
-
-        val movementMap = colorToDirection.getValue(color)
-
-        val directlyAttackables = attacker.get(attackingPiece)?.directions?.flatMap { direction ->
-            getDirectlyAttackablePositions(pos, movementMap.getValue(direction), attacker.get(attackingPiece).distance)
-        }
-        if (directlyAttackables != null) attackablePositions.addAll(directlyAttackables)
-
-        val jumpinglyAttackables = attacker.get(attackingPiece)?.jumpAttacks?.filter { isWithinBounds(Vector2(pos).add(it)) }
-        if (jumpinglyAttackables != null) attackablePositions.addAll(jumpinglyAttackables)
-
-
-        return attackablePositions
-    }
-
-    private fun getDirectlyAttackablePositions(selectedPos: Vector2, directionVector: Vector2, distance: Int): Set<Vector2> {
-        val field = Vector2(selectedPos)
-        val attackablePositions = mutableSetOf<Vector2>()
-
-        var travelledDistance = 0
-        while (isWithinBounds(field) && travelledDistance < distance) {
-            field.add(directionVector)
-            travelledDistance++
-
-            if (blockers.any { position.get(it).coordVector == field })
-                break
-
-            attackablePositions.add(Vector2(field))
+        val castlersTile = tiles.filter { walkable.get(it).castleableBy != null }.firstOrNull {
+            isPointInTile(Vector2(x, y), position.get(it).vector)
         }
 
-        return attackablePositions
+        return walkable.get(castlersTile)?.castleableBy
+    }
+
+    private fun triggerSystems(entity: Entity) {
+        TurnSystem.nextTurn()
+        CastleableBySelectedPieceSystem.onMoved(entity)
+
+        DistanceModifierSystem.trigger(entity)
+        WalkableBySelectedPieceSystem.trigger()
+        AttackableBySelectedPieceSystem.trigger()
+        CastleableBySelectedPieceSystem.trigger()
     }
 }

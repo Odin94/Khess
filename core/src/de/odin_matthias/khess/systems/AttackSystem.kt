@@ -26,7 +26,7 @@ object AttackSystem : EntitySystem() {
 
 
     override fun addedToEngine(engine: Engine) {
-        entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class, PieceSelectComponent::class, PositionComponent::class).get())
+        entities = engine.getEntitiesFor(allOf(PieceSelectComponent::class, PositionComponent::class).get())
         attackables = engine.getEntitiesFor(allOf(AttackableComponent::class).get())
     }
 
@@ -55,7 +55,7 @@ object AttackSystem : EntitySystem() {
 
     private fun triggerSystems(entity: Entity) {
         TurnSystem.nextTurn()
-        CastlingSystem.onMoved(entity)
+        CastleableBySelectedPieceSystem.onMoved(entity)
 
         DistanceModifierSystem.trigger(entity)
         WalkableBySelectedPieceSystem.trigger()
