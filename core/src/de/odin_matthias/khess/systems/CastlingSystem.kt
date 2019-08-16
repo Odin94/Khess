@@ -8,11 +8,9 @@ import com.badlogic.gdx.math.Vector2
 import de.odin_matthias.khess.components.BlockerComponent
 import de.odin_matthias.khess.components.ColorComponent
 import de.odin_matthias.khess.components.PositionComponent
-import de.odin_matthias.khess.components.movement.AttackComponent
-import de.odin_matthias.khess.components.movement.CastlingComponent
-import de.odin_matthias.khess.components.movement.CastlingTargetComponent
-import de.odin_matthias.khess.components.movement.colorToDirection
+import de.odin_matthias.khess.components.movement.*
 import de.odin_matthias.khess.extensions.isWithinBounds
+import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
 import ktx.ashley.has
 import ktx.ashley.mapperFor
@@ -22,15 +20,18 @@ import java.lang.Float.min
 
 object CastlingSystem : EntitySystem() {
     private lateinit var blockers: ImmutableArray<Entity>
+    private lateinit var tiles: ImmutableArray<Entity>
 
     private val castler = mapperFor<CastlingComponent>()
     private val position = mapperFor<PositionComponent>()
     private val color = mapperFor<ColorComponent>()
     private val attacker = mapperFor<AttackComponent>()
+    private val walkable = mapperFor<WalkableComponent>()
 
 
     override fun addedToEngine(engine: Engine) {
         blockers = engine.getEntitiesFor(allOf(BlockerComponent::class).get())
+        tiles = engine.getEntitiesFor(allOf(WalkableComponent::class).get())
     }
 
     override fun removedFromEngine(engine: Engine) {
@@ -41,25 +42,39 @@ object CastlingSystem : EntitySystem() {
 
     }
 
+    fun trigger() {
+        tiles.forEach {
+            walkable.get(it)?.castleableBy = null
+        }
+
+        getSelectedPiece()?.let {
+            getCastlers(it).forEach { castlers ->
+                tiles.forEach { tile ->
+                    if (position.get(tile).coordVector == position.get(castlers.castleTarget).coordVector)
+                        walkable.get(tile).castleableBy = castlers
+                }
+            }
+        }
+    }
+
     fun onMoved(entity: Entity) {
         entity.remove(CastlingComponent::class.java)
         entity.remove(CastlingTargetComponent::class.java)
     }
 
-    fun castlePositions(castlingPiece: Entity): List<Vector2> {
+    fun getCastlers(castlingPiece: Entity): List<Castlers> {
         if (!castlingPiece.has(castler)) return listOf()
 
-        val castleTargets = engine.getEntitiesFor(allOf(CastlingTargetComponent::class).get())
         val castlingPiecePos = position.get(castlingPiece)
-
-        return castleTargets
+        val castleTargets = engine.getEntitiesFor(allOf(CastlingTargetComponent::class).get())
                 .asSequence()
                 .filter { color.get(it).color == color.get(castlingPiece).color }
                 .filter { position.get(it).coordY == castlingPiecePos.coordY }
                 .filter { hasUnblockedHorizontalPath(position.get(it).coordVector, castlingPiecePos.coordVector) }
                 .filter { hasUnattackedHorizontalPath(it, castlingPiece) }
-                .map { position.get(it).coordVector }
                 .toList()
+
+        return castleTargets.map { Castlers(castlingPiece, it) }
     }
 
     private fun hasUnblockedHorizontalPath(pos1: Vector2, pos2: Vector2): Boolean {
