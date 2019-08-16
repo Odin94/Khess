@@ -89,6 +89,7 @@ object EntityFactory {
                     directions = listOf(Directions.FORWARD, Directions.LEFT, Directions.RIGHT, Directions.BACKWARD)
                 }
                 with<AttackableComponent>()
+                with<CastlingTargetComponent>()
             }
 
     fun addKnight(engine: Engine, row: Float, col: Float, color: PieceColors) =
@@ -187,5 +188,6 @@ object EntityFactory {
                     directions = Directions.values().toList()
                 }
                 with<AttackableComponent>()
+                with<CastlingComponent>()
             }
 }
