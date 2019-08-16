@@ -22,4 +22,16 @@ class PositionComponent() : Component {
             x = pos.x * TILE_SIZE
             y = pos.y * TILE_SIZE
         }
+
+    var coordX: Float
+        get() = x / TILE_SIZE
+        set(value) {
+            x = value * TILE_SIZE
+        }
+
+    var coordY: Float
+        get() = y / TILE_SIZE
+        set(value) {
+            y = value * TILE_SIZE
+        }
 }

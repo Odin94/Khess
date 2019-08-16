@@ -62,6 +62,9 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
             jumpMover.get(it)?.movements?.forEach { movements ->
                 markJumpinglyWalkableTiles(selectedPos, movements, tiles)
             }
+            CastlingSystem.castlePositions(it)
+                    .map { pos -> tiles.first { tile -> position.get(tile).coordVector == pos } }
+                    .forEach { tile -> walkable.get(tile).walkableBySelectedPiece = true }
         }
     }
 
@@ -92,5 +95,9 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
 
             if (tile != null) walkable.get(tile).walkableBySelectedPiece = true
         }
+    }
+
+    private fun markCastlingWalkableTiles() {
+
     }
 }

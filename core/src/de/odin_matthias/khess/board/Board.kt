@@ -73,11 +73,11 @@ class Board(private val width: Int, private val height: Int) {
         addRook(engine, 0f, 7f, PieceColors.WHITE)
         addRook(engine, 7f, 7f, PieceColors.WHITE)
 
-        addKnight(engine, 1f, 7f, PieceColors.WHITE)
-        addKnight(engine, 6f, 7f, PieceColors.WHITE)
+//        addKnight(engine, 1f, 7f, PieceColors.WHITE)
+//        addKnight(engine, 6f, 7f, PieceColors.WHITE)
 
-        addBishop(engine, 2f, 7f, PieceColors.WHITE)
-        addBishop(engine, 5f, 7f, PieceColors.WHITE)
+//        addBishop(engine, 2f, 7f, PieceColors.WHITE)
+//        addBishop(engine, 5f, 7f, PieceColors.WHITE)
 
         addKing(engine, 3f, 7f, PieceColors.WHITE)
         addQueen(engine, 4f, 7f, PieceColors.WHITE)

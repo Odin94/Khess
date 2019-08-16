@@ -12,6 +12,8 @@ Chess in Kotlin
 * AI
 * Turn history & undo / redo
 * Replays
+* Menu Screen
+
 
 ### Credits
 * Chess pieces by Buch on [OpenGameArt](https://opengameart.org/content/chess-pieces-set)

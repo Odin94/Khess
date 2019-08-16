@@ -46,38 +46,44 @@ object CastlingSystem : EntitySystem() {
         entity.remove(CastlingTargetComponent::class.java)
     }
 
-    fun canCastle(castlingPiece: Entity) {
-        if (castlingPiece.has(castler)) {
-            val castleTargets = engine.getEntitiesFor(allOf(CastlingTargetComponent::class).get())
-            val castlingPiecePos = position.get(castlingPiece)
+    fun castlePositions(castlingPiece: Entity): List<Vector2> {
+        if (!castlingPiece.has(castler)) return listOf()
 
-            castleTargets
-                    .filter { color.get(it).color == color.get(castlingPiece).color }
-                    .filter { position.get(it).y == castlingPiecePos.y }
-                    .filter { hasUnblockedHorizontalPath(position.get(it).coordVector, castlingPiecePos.coordVector) }
-                    .filter { hasUnattackedHorizontalPath(it, castlingPiece) }
-        }
+        val castleTargets = engine.getEntitiesFor(allOf(CastlingTargetComponent::class).get())
+        val castlingPiecePos = position.get(castlingPiece)
+
+        return castleTargets
+                .asSequence()
+                .filter { color.get(it).color == color.get(castlingPiece).color }
+                .filter { position.get(it).coordY == castlingPiecePos.coordY }
+                .filter { hasUnblockedHorizontalPath(position.get(it).coordVector, castlingPiecePos.coordVector) }
+                .filter { hasUnattackedHorizontalPath(it, castlingPiece) }
+                .map { position.get(it).coordVector }
+                .toList()
     }
 
     private fun hasUnblockedHorizontalPath(pos1: Vector2, pos2: Vector2): Boolean {
         val upper = max(pos1.x, pos2.x) - 1
         val lower = min(pos1.x, pos2.x) + 1
 
-        return blockers.firstOrNull {
-            (lower..upper).contains(position.get(it).x)
-        } == null
+        return blockers
+                .filter { position.get(it).coordY == pos1.y }
+                .firstOrNull {
+                    (lower..upper).contains(position.get(it).coordX)
+                } == null
     }
 
     private fun hasUnattackedHorizontalPath(piece1: Entity, piece2: Entity): Boolean {
         val pieceColor = color.get(piece1).color
-        val upper = max(position.get(piece1).x, position.get(piece2).x) - 1
-        val lower = min(position.get(piece1).x, position.get(piece2).x) + 1
+        val upper = max(position.get(piece1).coordX, position.get(piece2).coordX) - 1
+        val lower = min(position.get(piece1).coordX, position.get(piece2).coordX) + 1
 
         engine.getEntitiesFor(allOf(AttackComponent::class).get())
                 .filter { color.get(it).color != pieceColor }
                 .forEach {
-                    val positions = getAttackablePositions(it)
-                    if (positions.any { pos -> (lower..upper).contains(pos.x) }) return false
+                    val positions = getAttackablePositions(it).filter { pos -> pos.y == position.get(piece1).coordY }
+                    if (positions.any { pos -> (lower..upper).contains(pos.x) })
+                        return false
                 }
 
         return true
@@ -95,8 +101,8 @@ object CastlingSystem : EntitySystem() {
         }
         if (directlyAttackables != null) attackablePositions.addAll(directlyAttackables)
 
-        val jumptinglyAttackables = attacker.get(attackingPiece)?.jumpAttacks?.filter { isWithinBounds(Vector2(pos).add(it)) }
-        if (jumptinglyAttackables != null) attackablePositions.addAll(jumptinglyAttackables)
+        val jumpinglyAttackables = attacker.get(attackingPiece)?.jumpAttacks?.filter { isWithinBounds(Vector2(pos).add(it)) }
+        if (jumpinglyAttackables != null) attackablePositions.addAll(jumpinglyAttackables)
 
 
         return attackablePositions
