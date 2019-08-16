@@ -57,6 +57,9 @@ class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val c
             if (walkable.get(it)?.walkableBySelectedPiece == true) {
                 batch.draw(WALKABLE_HIGHLIGHT, position.x, position.y)
             }
+            if (walkable.get(it)?.castleableBy != null) {
+                batch.draw(WALKABLE_HIGHLIGHT, position.x, position.y)
+            }
         }
         batch.end()
     }
