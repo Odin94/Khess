@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.EntitySystem
 import de.odin_matthias.khess.PieceColors
 
 
-object TurnSystem : EntitySystem() {
+class TurnSystem : EntitySystem() {
     private val colors = PieceColors.values()
     var color: PieceColors = PieceColors.WHITE
 

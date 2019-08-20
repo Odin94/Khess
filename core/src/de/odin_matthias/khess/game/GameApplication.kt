@@ -16,9 +16,9 @@ class GameApplication() : ApplicationAdapter() {
     override fun create() {
         TextureRepository.load()
         batch = SpriteBatch()
-        Gdx.input.inputProcessor = InputReceiver
-
         board = Board(GameConfig.BOARD_DIMENSION, GameConfig.BOARD_DIMENSION)
+
+        Gdx.input.inputProcessor = InputReceiver(board.engine)
     }
 
     override fun render() {

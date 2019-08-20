@@ -54,6 +54,7 @@ project(":desktop") {
         implementation group: 'io.github.libktx', name: 'ktx-ashley', version: "$libktxVersion"
         implementation group: 'io.github.libktx', name: 'ktx-app', version: "$libktxVersion"
         implementation group: 'io.github.libktx', name: 'ktx-graphics', version: "$libktxVersion"
+        implementation group: 'io.github.libktx', name: 'ktx-vis', version: "$libktxVersion"
     }
 }
 

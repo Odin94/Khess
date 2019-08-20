@@ -13,13 +13,13 @@ import de.odin_matthias.khess.components.movement.DirectMovementComponent
 import de.odin_matthias.khess.components.movement.JumpMovementComponent
 import de.odin_matthias.khess.components.movement.WalkableComponent
 import de.odin_matthias.khess.components.movement.colorToDirection
+import de.odin_matthias.khess.extensions.getSelectedPiece
 import de.odin_matthias.khess.extensions.isWithinBounds
-import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-object WalkableBySelectedPieceSystem : EntitySystem() {
+class WalkableBySelectedPieceSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
     private lateinit var blockers: ImmutableArray<Entity>
     private lateinit var tiles: ImmutableArray<Entity>
@@ -49,10 +49,10 @@ object WalkableBySelectedPieceSystem : EntitySystem() {
             walkable.get(it)?.walkableBySelectedPiece = false
         }
 
-        getSelectedPiece()?.let {
+        getSelectedPiece(engine)?.let {
             val selectedPos = position.get(it).coordVector
             val selectedPieceColor = color.get(it).color
-            if (selectedPieceColor != TurnSystem.color) return
+            if (selectedPieceColor != engine.getSystem(TurnSystem::class.java).color) return
 
             val movementMap = colorToDirection.getValue(selectedPieceColor)
 

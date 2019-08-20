@@ -28,17 +28,16 @@ class Board(private val width: Int, private val height: Int) {
 
     private fun generateSystems() {
         engine.addSystem(RenderSystem())
-        // TODO: turn systems into classes and get them across systems with engine.getSystem(system::class)
-        engine.addSystem(PieceSelectSystem)
-        engine.addSystem(AttackableBySelectedPieceSystem)
-        engine.addSystem(WalkableBySelectedPieceSystem)
-        engine.addSystem(MovementSystem)
-        engine.addSystem(AttackSystem)
-        engine.addSystem(DistanceModifierSystem)
-        engine.addSystem(TurnSystem)
-        engine.addSystem(CastleableBySelectedPieceSystem)
-        engine.addSystem(CastlingSystem)
-        engine.addSystem(PromotionSystem)
+        engine.addSystem(PieceSelectSystem())
+        engine.addSystem(WalkableBySelectedPieceSystem())
+        engine.addSystem(AttackableBySelectedPieceSystem())
+        engine.addSystem(CastleableBySelectedPieceSystem())
+        engine.addSystem(MovementSystem())
+        engine.addSystem(AttackSystem())
+        engine.addSystem(DistanceModifierSystem())
+        engine.addSystem(TurnSystem())
+        engine.addSystem(CastlingSystem())
+        engine.addSystem(PromotionSystem())
     }
 
     private fun generateTiles(width: Int, height: Int) = also {

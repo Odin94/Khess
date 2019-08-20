@@ -8,13 +8,13 @@ import com.badlogic.gdx.math.Vector2
 import de.odin_matthias.khess.components.*
 import de.odin_matthias.khess.components.movement.AttackComponent
 import de.odin_matthias.khess.components.movement.colorToDirection
+import de.odin_matthias.khess.extensions.getSelectedPiece
 import de.odin_matthias.khess.extensions.isWithinBounds
-import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-object AttackableBySelectedPieceSystem : EntitySystem() {
+class AttackableBySelectedPieceSystem : EntitySystem() {
     private lateinit var attackablePieces: ImmutableArray<Entity>
     private lateinit var blockers: ImmutableArray<Entity>
 
@@ -41,10 +41,10 @@ object AttackableBySelectedPieceSystem : EntitySystem() {
             attackable.get(it).attackableBySelectedPiece = false
         }
 
-        getSelectedPiece()?.let {
+        getSelectedPiece(engine)?.let {
             val selectedPos = position.get(it).coordVector
             val selectedPieceColor = color.get(it).color
-            if (selectedPieceColor != TurnSystem.color) return
+            if (selectedPieceColor != engine.getSystem(TurnSystem::class.java).color) return
 
             val opponentPieces = attackablePieces.filter { opponent -> color.get(opponent).color != selectedPieceColor }
 

@@ -15,7 +15,7 @@ import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-object PieceSelectSystem : EntitySystem() {
+class PieceSelectSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()
@@ -49,9 +49,9 @@ object PieceSelectSystem : EntitySystem() {
 
     private fun triggerSystems() {
         // TODO: use signals for this?  (system trigger order matters!)
-        WalkableBySelectedPieceSystem.trigger()
-        AttackableBySelectedPieceSystem.trigger()
-        CastleableBySelectedPieceSystem.trigger()
+        engine.getSystem(WalkableBySelectedPieceSystem::class.java).trigger()
+        engine.getSystem(AttackableBySelectedPieceSystem::class.java).trigger()
+        engine.getSystem(CastleableBySelectedPieceSystem::class.java).trigger()
     }
 
     private fun clickHitPiece(piece: Entity): Boolean {
@@ -60,6 +60,4 @@ object PieceSelectSystem : EntitySystem() {
 
         return isPointInTile(Vector2(x, y), piecePos.vector)
     }
-
-    fun getSelectedPiece() = entities.firstOrNull { selected.get(it).selected }
 }

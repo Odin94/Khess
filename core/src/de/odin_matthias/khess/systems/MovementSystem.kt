@@ -11,13 +11,13 @@ import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.movement.WalkableComponent
 import de.odin_matthias.khess.extensions.component1
 import de.odin_matthias.khess.extensions.component2
+import de.odin_matthias.khess.extensions.getSelectedPiece
 import de.odin_matthias.khess.extensions.isPointInTile
-import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-object MovementSystem : EntitySystem() {
+class MovementSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
     private lateinit var walkables: ImmutableArray<Entity>
 
@@ -39,7 +39,7 @@ object MovementSystem : EntitySystem() {
     }
 
     fun move(): Boolean {
-        getSelectedPiece()?.let { selected ->
+        getSelectedPiece(engine)?.let { selected ->
             getSelectedWalkable()?.let { walkable ->
                 position.get(selected).vector = position.get(walkable).vector
 
@@ -53,14 +53,14 @@ object MovementSystem : EntitySystem() {
     }
 
     private fun triggerSystems(entity: Entity) {
-        TurnSystem.nextTurn()
-        CastleableBySelectedPieceSystem.onMoved(entity)
+        engine.getSystem(TurnSystem::class.java).nextTurn()
+        engine.getSystem(CastleableBySelectedPieceSystem::class.java).onMoved(entity)
 
-        DistanceModifierSystem.trigger(entity)
-        WalkableBySelectedPieceSystem.trigger()
-        AttackableBySelectedPieceSystem.trigger()
-        CastleableBySelectedPieceSystem.trigger()
-        PromotionSystem.trigger(entity)
+        engine.getSystem(DistanceModifierSystem::class.java).trigger(entity)
+        engine.getSystem(WalkableBySelectedPieceSystem::class.java).trigger()
+        engine.getSystem(AttackableBySelectedPieceSystem::class.java).trigger()
+        engine.getSystem(CastleableBySelectedPieceSystem::class.java).trigger()
+        engine.getSystem(PromotionSystem::class.java).trigger(entity)
     }
 
     private fun getSelectedWalkable(): Entity? {

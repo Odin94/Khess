@@ -11,7 +11,7 @@ import de.odin_matthias.khess.game.GameConfig
 import ktx.ashley.mapperFor
 
 
-object PromotionSystem : EntitySystem() {
+class PromotionSystem : EntitySystem() {
     private val position = mapperFor<PositionComponent>()
     private val promotion = mapperFor<PromotionComponent>()
     private val color = mapperFor<ColorComponent>()

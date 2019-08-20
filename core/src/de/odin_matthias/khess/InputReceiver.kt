@@ -1,5 +1,6 @@
 package de.odin_matthias.khess
 
+import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import de.odin_matthias.khess.systems.AttackSystem
@@ -8,15 +9,15 @@ import de.odin_matthias.khess.systems.MovementSystem
 import de.odin_matthias.khess.systems.PieceSelectSystem
 
 
-object InputReceiver : InputProcessor {
+class InputReceiver(val engine: Engine) : InputProcessor {
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (button == Input.Buttons.LEFT) {
-            val selectedAPiece = PieceSelectSystem.select()
+            val selectedAPiece = engine.getSystem(PieceSelectSystem::class.java).select()
         } else if (button == Input.Buttons.RIGHT) {
-            var acted = MovementSystem.move()
-            if (!acted) acted = AttackSystem.attack()
-            if (!acted) acted = CastlingSystem.castle()
+            var acted = engine.getSystem(MovementSystem::class.java).move()
+            if (!acted) acted = engine.getSystem(AttackSystem::class.java).attack()
+            if (!acted) acted = engine.getSystem(CastlingSystem::class.java).castle()
         }
 
 

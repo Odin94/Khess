@@ -9,8 +9,8 @@ import de.odin_matthias.khess.components.BlockerComponent
 import de.odin_matthias.khess.components.ColorComponent
 import de.odin_matthias.khess.components.PositionComponent
 import de.odin_matthias.khess.components.movement.*
+import de.odin_matthias.khess.extensions.getSelectedPiece
 import de.odin_matthias.khess.extensions.isWithinBounds
-import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
 import ktx.ashley.has
 import ktx.ashley.mapperFor
@@ -18,7 +18,7 @@ import java.lang.Float.max
 import java.lang.Float.min
 
 
-object CastleableBySelectedPieceSystem : EntitySystem() {
+class CastleableBySelectedPieceSystem : EntitySystem() {
     private lateinit var blockers: ImmutableArray<Entity>
     private lateinit var tiles: ImmutableArray<Entity>
 
@@ -47,7 +47,7 @@ object CastleableBySelectedPieceSystem : EntitySystem() {
             walkable.get(it)?.castleableBy = null
         }
 
-        getSelectedPiece()?.let {
+        getSelectedPiece(engine)?.let {
             getCastlers(it).forEach { castlers ->
                 tiles.forEach { tile ->
                     if (position.get(tile).coordVector == position.get(castlers.castleTarget).coordVector)

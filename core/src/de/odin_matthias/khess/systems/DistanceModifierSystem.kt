@@ -11,7 +11,7 @@ import ktx.ashley.has
 import ktx.ashley.mapperFor
 
 
-object DistanceModifierSystem : EntitySystem() {
+class DistanceModifierSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val distanceModifier = mapperFor<DistanceModifierComponent>()

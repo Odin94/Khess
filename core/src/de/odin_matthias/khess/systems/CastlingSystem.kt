@@ -12,13 +12,13 @@ import de.odin_matthias.khess.components.movement.Castlers
 import de.odin_matthias.khess.components.movement.WalkableComponent
 import de.odin_matthias.khess.extensions.component1
 import de.odin_matthias.khess.extensions.component2
+import de.odin_matthias.khess.extensions.getSelectedPiece
 import de.odin_matthias.khess.extensions.isPointInTile
-import de.odin_matthias.khess.systems.PieceSelectSystem.getSelectedPiece
 import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-object CastlingSystem : EntitySystem() {
+class CastlingSystem : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
     private lateinit var tiles: ImmutableArray<Entity>
 
@@ -41,7 +41,7 @@ object CastlingSystem : EntitySystem() {
     }
 
     fun castle(): Boolean {
-        getSelectedPiece()?.let { selected ->
+        getSelectedPiece(engine)?.let { selected ->
             getSelectedCastlers()?.let { castlers ->
                 val castlerPosition = position.get(castlers.castler)
                 val castleTargetPosition = position.get(castlers.castleTarget)
@@ -74,13 +74,13 @@ object CastlingSystem : EntitySystem() {
     }
 
     private fun triggerSystems(entity: Entity) {
-        TurnSystem.nextTurn()
-        CastleableBySelectedPieceSystem.onMoved(entity)
+        engine.getSystem(TurnSystem::class.java).nextTurn()
+        engine.getSystem(CastleableBySelectedPieceSystem::class.java).onMoved(entity)
 
-        DistanceModifierSystem.trigger(entity)
-        WalkableBySelectedPieceSystem.trigger()
-        AttackableBySelectedPieceSystem.trigger()
-        CastleableBySelectedPieceSystem.trigger()
-        PromotionSystem.trigger(entity)
+        engine.getSystem(DistanceModifierSystem::class.java).trigger(entity)
+        engine.getSystem(WalkableBySelectedPieceSystem::class.java).trigger()
+        engine.getSystem(AttackableBySelectedPieceSystem::class.java).trigger()
+        engine.getSystem(CastleableBySelectedPieceSystem::class.java).trigger()
+        engine.getSystem(PromotionSystem::class.java).trigger(entity)
     }
 }
