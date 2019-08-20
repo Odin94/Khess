@@ -21,7 +21,7 @@ allprojects {
     ext {
         appName = "Khess"
         gdxVersion = '1.9.10'
-        libktxVersion = '1.9.9-b2'
+        libktxVersion = '1.9.10-b1'
         roboVMVersion = '2.3.7'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.3'
@@ -54,7 +54,6 @@ project(":desktop") {
         implementation group: 'io.github.libktx', name: 'ktx-ashley', version: "$libktxVersion"
         implementation group: 'io.github.libktx', name: 'ktx-app', version: "$libktxVersion"
         implementation group: 'io.github.libktx', name: 'ktx-graphics', version: "$libktxVersion"
-        implementation group: 'io.github.libktx', name: 'ktx-vis', version: "$libktxVersion"
     }
 }
 
@@ -72,5 +71,8 @@ project(":core") {
         implementation group: 'io.github.libktx', name: 'ktx-ashley', version: "$libktxVersion"
         implementation group: 'io.github.libktx', name: 'ktx-app', version: "$libktxVersion"
         implementation group: 'io.github.libktx', name: 'ktx-graphics', version: "$libktxVersion"
+        implementation group: 'io.github.libktx', name: 'ktx-scene2d', version: "$libktxVersion"
+        implementation group: 'io.github.libktx', name: 'ktx-style', version: "$libktxVersion"
+        implementation group: 'io.github.libktx', name: 'ktx-actors', version: "$libktxVersion"
     }
 }
