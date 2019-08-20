@@ -4,7 +4,7 @@ Chess in Kotlin
 ### Missing Features
 * En passant
 * 75-move rule
-* Pawn promotion
+* Pick piece on pawn promotion
 * Stalemate
 * Check & Checkmate
 * Network Multiplayer

@@ -63,6 +63,7 @@ object EntityFactory {
                     directions = listOf(Directions.FORWARD_LEFT, Directions.FORWARD_RIGHT)
                 }
                 with<AttackableComponent>()
+                with<PromotionComponent>()
             }
 
     fun addRook(engine: Engine, row: Float, col: Float, color: PieceColors) =

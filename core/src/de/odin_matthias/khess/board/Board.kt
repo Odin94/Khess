@@ -38,6 +38,7 @@ class Board(private val width: Int, private val height: Int) {
         engine.addSystem(TurnSystem)
         engine.addSystem(CastleableBySelectedPieceSystem)
         engine.addSystem(CastlingSystem)
+        engine.addSystem(PromotionSystem)
     }
 
     private fun generateTiles(width: Int, height: Int) = also {

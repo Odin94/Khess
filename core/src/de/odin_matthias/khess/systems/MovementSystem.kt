@@ -59,6 +59,8 @@ object MovementSystem : EntitySystem() {
         DistanceModifierSystem.trigger(entity)
         WalkableBySelectedPieceSystem.trigger()
         AttackableBySelectedPieceSystem.trigger()
+        CastleableBySelectedPieceSystem.trigger()
+        PromotionSystem.trigger(entity)
     }
 
     private fun getSelectedWalkable(): Entity? {

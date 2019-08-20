@@ -70,7 +70,7 @@ object CastlingSystem : EntitySystem() {
             isPointInTile(Vector2(x, y), position.get(it).vector)
         }
 
-        return walkable.get(castlersTile)?.castleableBy
+        return if (castlersTile != null) walkable.get(castlersTile)?.castleableBy else null
     }
 
     private fun triggerSystems(entity: Entity) {
@@ -81,5 +81,6 @@ object CastlingSystem : EntitySystem() {
         WalkableBySelectedPieceSystem.trigger()
         AttackableBySelectedPieceSystem.trigger()
         CastleableBySelectedPieceSystem.trigger()
+        PromotionSystem.trigger(entity)
     }
 }
