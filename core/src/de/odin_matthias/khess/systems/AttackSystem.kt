@@ -17,7 +17,7 @@ import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-class AttackSystem : EntitySystem() {
+class AttackSystem(val camera: Camera) : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
     private lateinit var attackables: ImmutableArray<Entity>
 
@@ -65,7 +65,7 @@ class AttackSystem : EntitySystem() {
     }
 
     private fun getSelectedAttackable(): Entity? {
-        val (x, y) = Camera.getMousePosInGameWorld()
+        val (x, y) = camera.getMousePosInGameWorld()
 
         return attackables.filter { attackable.get(it).attackableBySelectedPiece }.firstOrNull {
             isPointInTile(Vector2(x, y), position.get(it).vector)

@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3
 import de.odin_matthias.khess.game.GameConfig
 
 
-object Camera : OrthographicCamera(GameConfig.BOARD_SIZE.toFloat(), GameConfig.BOARD_SIZE.toFloat()) {
+class Camera : OrthographicCamera(GameConfig.BOARD_SIZE.toFloat(), GameConfig.BOARD_SIZE.toFloat()) {
 
     init {
         position.set(GameConfig.BOARD_SIZE.toFloat() / 2, GameConfig.BOARD_SIZE.toFloat() / 2, 0f)

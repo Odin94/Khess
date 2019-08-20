@@ -17,7 +17,7 @@ import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-class MovementSystem : EntitySystem() {
+class MovementSystem(val camera: Camera) : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
     private lateinit var walkables: ImmutableArray<Entity>
 
@@ -64,7 +64,7 @@ class MovementSystem : EntitySystem() {
     }
 
     private fun getSelectedWalkable(): Entity? {
-        val (x, y) = Camera.getMousePosInGameWorld()
+        val (x, y) = camera.getMousePosInGameWorld()
 
         return walkables.filter { walkable.get(it).walkableBySelectedPiece }.firstOrNull {
             isPointInTile(Vector2(x, y), position.get(it).vector)

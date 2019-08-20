@@ -19,7 +19,7 @@ import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val camera: OrthographicCamera = Camera) : EntitySystem() {
+class RenderSystem(private val batch: SpriteBatch = SpriteBatch(), private val camera: OrthographicCamera = Camera()) : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()

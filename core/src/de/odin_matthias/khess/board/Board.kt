@@ -1,6 +1,7 @@
 package de.odin_matthias.khess.board
 
 import com.badlogic.ashley.core.Engine
+import de.odin_matthias.khess.Camera
 import de.odin_matthias.khess.EntityFactory.addBishop
 import de.odin_matthias.khess.EntityFactory.addKing
 import de.odin_matthias.khess.EntityFactory.addKnight
@@ -14,6 +15,7 @@ import de.odin_matthias.khess.systems.*
 
 class Board(private val width: Int, private val height: Int) {
     val engine = Engine()
+    private val camera = Camera()
 
     init {
         generateEntities()
@@ -27,16 +29,16 @@ class Board(private val width: Int, private val height: Int) {
     }
 
     private fun generateSystems() {
-        engine.addSystem(RenderSystem())
-        engine.addSystem(PieceSelectSystem())
+        engine.addSystem(RenderSystem(camera = camera))
+        engine.addSystem(PieceSelectSystem(camera))
         engine.addSystem(WalkableBySelectedPieceSystem())
         engine.addSystem(AttackableBySelectedPieceSystem())
         engine.addSystem(CastleableBySelectedPieceSystem())
-        engine.addSystem(MovementSystem())
-        engine.addSystem(AttackSystem())
+        engine.addSystem(MovementSystem(camera))
+        engine.addSystem(AttackSystem(camera))
         engine.addSystem(DistanceModifierSystem())
         engine.addSystem(TurnSystem())
-        engine.addSystem(CastlingSystem())
+        engine.addSystem(CastlingSystem(camera))
         engine.addSystem(PromotionSystem())
     }
 

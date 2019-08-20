@@ -15,7 +15,7 @@ import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-class PieceSelectSystem : EntitySystem() {
+class PieceSelectSystem(val camera: Camera) : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
 
     private val position = mapperFor<PositionComponent>()
@@ -56,7 +56,7 @@ class PieceSelectSystem : EntitySystem() {
 
     private fun clickHitPiece(piece: Entity): Boolean {
         val piecePos = position.get(piece)
-        val (x, y) = Camera.getMousePosInGameWorld()
+        val (x, y) = camera.getMousePosInGameWorld()
 
         return isPointInTile(Vector2(x, y), piecePos.vector)
     }

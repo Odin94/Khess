@@ -18,7 +18,7 @@ import ktx.ashley.allOf
 import ktx.ashley.mapperFor
 
 
-class CastlingSystem : EntitySystem() {
+class CastlingSystem(val camera: Camera) : EntitySystem() {
     private lateinit var entities: ImmutableArray<Entity>
     private lateinit var tiles: ImmutableArray<Entity>
 
@@ -64,7 +64,7 @@ class CastlingSystem : EntitySystem() {
     }
 
     private fun getSelectedCastlers(): Castlers? {
-        val (x, y) = Camera.getMousePosInGameWorld()
+        val (x, y) = camera.getMousePosInGameWorld()
 
         val castlersTile = tiles.filter { walkable.get(it).castleableBy != null }.firstOrNull {
             isPointInTile(Vector2(x, y), position.get(it).vector)
