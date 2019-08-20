@@ -2,6 +2,7 @@
 Chess in Kotlin
 
 ### Missing Features
+* Saving / resuming games
 * En passant
 * 75-move rule
 * Pick piece on pawn promotion
